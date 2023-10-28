@@ -6,7 +6,7 @@ project(${PROJECT_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(formatCpp REQUIRED)
+# find_package(formatCpp REQUIRED)
 
 add_executable(${PROJECT_NAME} tests.cpp)
 
@@ -15,7 +15,7 @@ add_custom_command(TARGET tests POST_BUILD
     COMMAND tests -C $<CONFIGURATION> --verbose
 )
 
-target_link_libraries(
-    ${PROJECT_NAME}
-    formatCpp
-)
+# target_link_libraries(
+#     ${PROJECT_NAME}
+#     formatCpp
+# )
