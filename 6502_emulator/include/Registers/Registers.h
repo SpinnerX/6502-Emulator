@@ -6,6 +6,18 @@
 #include <common/types.h>
 #include <Registers/RegisterTraits.h>
 
+
+/***
+ * 
+ * 
+ * Registers Types
+ * - Reason why we want to access these specicifc registers based on opcodes is because of the fetch-cycle.
+ * - Through the fetch, decode, execute cycle we use opcodes to search which instruction we want to execute.
+ * - That is how the cycle process will look to when trying to check which instruction to execute.
+ * 
+*/
+
+
 struct BaseRegister{
     virtual RegisterTraits data() = 0;
     AddressModes mode;
@@ -20,7 +32,11 @@ struct Register;
 
 
 
-
+/**
+ * 
+ * Load, store, interregister transfer registers
+ * 
+*/
 
 
 /**
@@ -710,7 +726,7 @@ struct Register<0xAA> : public BaseRegister{
 template<>
 struct Register<0xA8> : public BaseRegister{
      Register<0xA8>(){
-        traits = RegisterTraits(RegisterTypes::TAX, AddressModes::IMPLIED, 0xA8, 1, 2);
+        traits = RegisterTraits(RegisterTypes::TAY, AddressModes::IMPLIED, 0xA8, 1, 2);
     }
 
     void execute(){
@@ -736,7 +752,7 @@ struct Register<0xA8> : public BaseRegister{
 template<>
 struct Register<0xBA> : public BaseRegister{
      Register<0xBA>(){
-        traits = RegisterTraits(RegisterTypes::TAX, AddressModes::IMPLIED, 0xBA, 1, 2);
+        traits = RegisterTraits(RegisterTypes::TSX, AddressModes::IMPLIED, 0xBA, 1, 2);
     }
 
     void execute(){
@@ -762,7 +778,7 @@ struct Register<0xBA> : public BaseRegister{
 template<>
 struct Register<0x8A> : public BaseRegister{
      Register<0x8A>(){
-        traits = RegisterTraits(RegisterTypes::TAX, AddressModes::IMPLIED, 0x8A, 1, 2);
+        traits = RegisterTraits(RegisterTypes::TXA, AddressModes::IMPLIED, 0x8A, 1, 2);
     }
 
     void execute(){
@@ -788,7 +804,7 @@ struct Register<0x8A> : public BaseRegister{
 template<>
 struct Register<0x9A> : public BaseRegister{
      Register<0x9A>(){
-        traits = RegisterTraits(RegisterTypes::TAX, AddressModes::IMPLIED, 0x9A, 1, 2);
+        traits = RegisterTraits(RegisterTypes::TXS, AddressModes::IMPLIED, 0x9A, 1, 2);
     }
 
     void execute(){
@@ -814,7 +830,7 @@ struct Register<0x9A> : public BaseRegister{
 template<>
 struct Register<0x98> : public BaseRegister{
      Register<0x98>(){
-        traits = RegisterTraits(RegisterTypes::TAX, AddressModes::IMPLIED, 0x98, 1, 2);
+        traits = RegisterTraits(RegisterTypes::TYA, AddressModes::IMPLIED, 0x98, 1, 2);
     }
 
     void execute(){
@@ -830,21 +846,1029 @@ struct Register<0x98> : public BaseRegister{
 };
 
 
+/**
+ * 
+ * 
+ * Stack Instructions
+ * 
+ * 
+ * 
+*/
+
+
+/**
+ * 
+ * PHA (Push Accumulator on Stack)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x48> : public BaseRegister{
+     Register<0x48>(){
+        traits = RegisterTraits(RegisterTypes::PHA, AddressModes::IMPLIED, 0x48, 1, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x48>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * PHP (Push Processor Status on Stack)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x08> : public BaseRegister{
+     Register<0x08>(){
+        traits = RegisterTraits(RegisterTypes::PHP, AddressModes::IMPLIED, 0x08, 1, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x08>& ins){
+        return outs;
+    }
+};
+
+/**
+ * 
+ * PLA (Pull Processor Status from Stack)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x68> : public BaseRegister{
+     Register<0x68>(){
+        traits = RegisterTraits(RegisterTypes::PLA, AddressModes::IMPLIED, 0x68, 1, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x68>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * PLP (Pull Processor Status from Stack)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x28> : public BaseRegister{
+     Register<0x28>(){
+        traits = RegisterTraits(RegisterTypes::PLP, AddressModes::IMPLIED, 0x28, 1, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x28>& ins){
+        return outs;
+    }
+};
 
 
 
 
+/** Decrement * Increments **/
+
+/**
+ * 
+ * DEC (Decrement Memory by One)
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * 
+*/
+
+template<>
+struct Register<0xC6> : public BaseRegister{
+     Register<0xC6>(){
+        traits = RegisterTraits(RegisterTypes::DEC, AddressModes::ZPG, 0xC6, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xC6>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xD6> : public BaseRegister{
+     Register<0xD6>(){
+        traits = RegisterTraits(RegisterTypes::DEC, AddressModes::ZPG_X, 0xD6, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xD6>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xCE> : public BaseRegister{
+     Register<0xCE>(){
+        traits = RegisterTraits(RegisterTypes::DEC, AddressModes::ABS, 0xCE, 3, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xCE>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xDE> : public BaseRegister{
+     Register<0xDE>(){
+        traits = RegisterTraits(RegisterTypes::DEC, AddressModes::ABSX, 0xDE, 3, 7);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xDE>& ins){
+        return outs;
+    }
+};
+
+
+
+/**
+ * 
+ * DEX (Decrement Index X by One)
+ * - IMPLIED
+ * 
+*/
+
+template<>
+struct Register<0xCA> : public BaseRegister{
+     Register<0xCA>(){
+        traits = RegisterTraits(RegisterTypes::DEX, AddressModes::IMPLIED, 0xCA, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xCA>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * DEY (Decrement Index Y by One)
+ * - IMPLIED
+ * 
+*/
+
+template<>
+struct Register<0x88> : public BaseRegister{
+     Register<0x88>(){
+        traits = RegisterTraits(RegisterTypes::DEY, AddressModes::IMPLIED, 0x88, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x88>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * INC (Increment Memory By One)
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * 
+*/
+
+template<>
+struct Register<0xE6> : public BaseRegister{
+     Register<0xE6>(){
+        traits = RegisterTraits(RegisterTypes::INC, AddressModes::ZPG, 0xE6, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xE6>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xF6> : public BaseRegister{
+     Register<0xF6>(){
+        traits = RegisterTraits(RegisterTypes::INC, AddressModes::ZPG_X, 0xF6, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xF6>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xEE> : public BaseRegister{
+     Register<0xEE>(){
+        traits = RegisterTraits(RegisterTypes::INC, AddressModes::ABS, 0xEE, 3, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xEE>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xFE> : public BaseRegister{
+     Register<0xFE>(){
+        traits = RegisterTraits(RegisterTypes::INC, AddressModes::ABSX, 0xFE, 3, 7);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xFE>& ins){
+        return outs;
+    }
+};
+
+
+
+/**
+ * 
+ * INX (Increment Index X by One)
+ * - IMPLIED
+ * 
+*/
+
+template<>
+struct Register<0xE8> : public BaseRegister{
+     Register<0xE8>(){
+        traits = RegisterTraits(RegisterTypes::INX, AddressModes::IMPLIED, 0xE8, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xE8>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * INY (Increment Index Y by One)
+ * - IMPLIED
+ * 
+*/
+
+template<>
+struct Register<0xC8> : public BaseRegister{
+     Register<0xC8>(){
+        traits = RegisterTraits(RegisterTypes::INY, AddressModes::IMPLIED, 0xC8, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xC8>& ins){
+        return outs;
+    }
+};
 
 
 
 
+/**
+ * 
+ * ADC (Add Memory to Accumulator with Carry)
+ * - IMMEDIATE
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * - Absolute Y
+ * - Indirect X
+ * - Indirect Y
+ * 
+*/
+
+template<>
+struct Register<0x69> : public BaseRegister{
+     Register<0x69>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::IMMEDIATE, 0x69, 2, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x69>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x65> : public BaseRegister{
+     Register<0x65>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::ZPG, 0x65, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x65>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x75> : public BaseRegister{
+     Register<0x75>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::ZPG_X, 0x75, 2, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x75>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x6D> : public BaseRegister{
+     Register<0x6D>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::ABS, 0x6D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x6D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x7D> : public BaseRegister{
+     Register<0x7D>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::ABSX, 0x7D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x7D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x79> : public BaseRegister{
+     Register<0x79>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::ABSY, 0x79, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x79>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x61> : public BaseRegister{
+     Register<0x61>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::INDIRECT_X, 0x61, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x61>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x71> : public BaseRegister{
+     Register<0x71>(){
+        traits = RegisterTraits(RegisterTypes::ADC, AddressModes::INDIRECT_Y, 0x71, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x71>& ins){
+        return outs;
+    }
+};
+
+
+/**
+ * 
+ * SBC (Subtract Memory from Accumulator with Borrow)
+ * - IMMEDIATE
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * - Absolute Y
+ * - Indirect X
+ * - Indirect Y
+ * 
+*/
+template<>
+struct Register<0xE9> : public BaseRegister{
+     Register<0xE9>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::IMMEDIATE, 0xE9, 2, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xE9>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xE5> : public BaseRegister{
+     Register<0xE5>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::ZPG, 0xE5, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xE5>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xF5> : public BaseRegister{
+     Register<0xF5>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::ZPG_X, 0xF5, 2, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xF5>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xED> : public BaseRegister{
+     Register<0xED>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::ABS, 0xED, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xED>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xFD> : public BaseRegister{
+     Register<0xFD>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::ABSX, 0xFD, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xFD>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xF9> : public BaseRegister{
+     Register<0xF9>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::ABSY, 0xF9, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xF9>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xE1> : public BaseRegister{
+     Register<0xE1>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::INDIRECT_X, 0xE1, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xE1>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0xF1> : public BaseRegister{
+     Register<0xF1>(){
+        traits = RegisterTraits(RegisterTypes::SBC, AddressModes::INDIRECT_Y, 0xF1, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xF1>& ins){
+        return outs;
+    }
+};
+
+
+/** Logical Operations **/
+
+/**
+ * 
+ * AND (AND Memory with Accumulator)
+ * - IMMEDIATE
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * - Absolute Y
+ * - Indirect X
+ * - Indirect Y
+ * 
+*/
+
+template<>
+struct Register<0x29> : public BaseRegister{
+     Register<0x29>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::IMMEDIATE, 0x29, 2, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x29>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x25> : public BaseRegister{
+     Register<0x25>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::ZPG, 0x25, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x25>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x35> : public BaseRegister{
+     Register<0x35>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::ZPG_X, 0x35, 2, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x35>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x2D> : public BaseRegister{
+     Register<0x2D>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::ABS, 0x2D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x2D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x3D> : public BaseRegister{
+     Register<0x3D>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::ABSX, 0x3D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x3D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x39> : public BaseRegister{
+     Register<0x39>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::ABSY, 0x39, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x39>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x21> : public BaseRegister{
+     Register<0x21>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::INDIRECT_X, 0x21, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x21>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x31> : public BaseRegister{
+     Register<0x31>(){
+        traits = RegisterTraits(RegisterTypes::AND, AddressModes::INDIRECT_Y, 0x31, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x31>& ins){
+        return outs;
+    }
+};
 
 
 
+/**
+ * 
+ * EOR (Exclusive-OR Memory with Accumulator)
+ * - IMMEDIATE
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * - Absolute Y
+ * - Indirect X
+ * - Indirect Y
+ * 
+*/
 
+template<>
+struct Register<0x49> : public BaseRegister{
+     Register<0x49>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::IMMEDIATE, 0x49, 2, 2);
+    }
 
+    void execute(){
+    }
 
+    RegisterTraits data() override {
+        return traits;
+    }
 
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x49>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x45> : public BaseRegister{
+     Register<0x45>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::ZPG, 0x45, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x45>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x55> : public BaseRegister{
+     Register<0x55>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::ZPG_X, 0x55, 2, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x55>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x4D> : public BaseRegister{
+     Register<0x4D>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::ABS, 0x4D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x4D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x5D> : public BaseRegister{
+     Register<0x5D>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::ABSX, 0x5D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x5D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x59> : public BaseRegister{
+     Register<0x59>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::ABSY, 0x59, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x59>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x41> : public BaseRegister{
+     Register<0x41>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::INDIRECT_X, 0x41, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x41>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x51> : public BaseRegister{
+     Register<0x51>(){
+        traits = RegisterTraits(RegisterTypes::EOR, AddressModes::INDIRECT_Y, 0x51, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x51>& ins){
+        return outs;
+    }
+};
 
 
 
