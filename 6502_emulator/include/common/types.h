@@ -123,7 +123,7 @@ enum class AddressModes{
     ABSX,               // Absolute, X => Absolute, X-indexed
     ABSY,               // Absolute, Y => Absolute, Y-indexed
     IMMEDIATE,          // means immediate
-    IMPL,               // implied
+    IMPLIED,               // implied
     IND,                // indirect
     INDIRECT_X,         // x-indexed, indirect
     INDIRECT_Y,         // indirect, y-indexed
