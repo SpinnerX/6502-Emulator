@@ -112,6 +112,80 @@ public:
         instructions.insert({0x94, [](){ return new Register<0x94>(); }});
         instructions.insert({0x8C, [](){ return new Register<0x8C>(); }});
 
+        // Transfer Instructions (that only have one address mode, which is IMPLIED)
+        instructions.insert({0xAA, [](){ return new Register<0xAA>(); }}); // TAX .. IMPLIED
+        instructions.insert({0xA8, [](){ return new Register<0xA8>(); }}); // TAY .. IMPLIED
+        instructions.insert({0xBA, [](){ return new Register<0xBA>();}});  // TSX .. IMPLIED
+        instructions.insert({0x8A, [](){ return new Register<0x8A>(); }}); // TXA .. IMPLIED
+        instructions.insert({0x9A, [](){ return new Register<0x9A>(); }}); // TXS .. IMPLIED
+        instructions.insert({0x98, [](){ return new Register<0x98>(); }}); // TYA .. IMPLIED
+
+        // Stack Instructions (transferring accumulator,status reg(flags) to and from stack)
+        instructions.insert({0x48, [](){ return new Register<0x48>(); }});
+        instructions.insert({0x08, [](){ return new Register<0x08>(); }});
+        instructions.insert({0x68, [](){ return new Register<0x68>(); }});
+        instructions.insert({0x28, [](){ return new Register<0x28>(); }});
+
+        // Decrements & Increments Instruction
+        // DEC - Instruction Name
+        instructions.insert({0xC6, [](){ return new Register<0xC6>(); }}); // ZeroPage
+        instructions.insert({0xD6, [](){ return new Register<0xD6>(); }}); // ZeroPage X
+        instructions.insert({0xCE, [](){ return new Register<0xCE>(); }}); // Absolute
+        instructions.insert({0xDE, [](){ return new Register<0xDE>(); }}); // Absolute X
+
+        // INC (Increment Memory by One)
+        instructions.insert({0xE6, [](){ return new Register<0xE6>(); }}); // ZeroPage
+        instructions.insert({0xF6, [](){ return new Register<0xF6>(); }}); // ZeroPage X
+        instructions.insert({0xEE, [](){ return new Register<0xEE>(); }}); // Absolute
+        instructions.insert({0xFE, [](){ return new Register<0xFE>(); }}); // ZeroPage
+
+        // INX (Increment Index X By One)
+        instructions.insert({0xE8, [](){ return new Register<0xE8>(); }});
+
+        // INY (Increment Index Y By One)
+        instructions.insert({0xC8, [](){ return new Register<0xC8>(); }});
+
+        // ADC (Add Memory to Accumulator with Carry)
+        instructions.insert({0x69, [](){ return new Register<0x69>(); }}); // IMMEDIATE
+        instructions.insert({0x65, [](){ return new Register<0x65>(); }}); // ZeroPage
+        instructions.insert({0x75, [](){ return new Register<0x75>(); }}); // ZeroPage X
+        instructions.insert({0x6D, [](){ return new Register<0x6D>(); }}); // Absolute
+        instructions.insert({0x7D, [](){ return new Register<0x7D>(); }}); // Absolute X
+        instructions.insert({0x79, [](){ return new Register<0x79>(); }}); // Absolute Y
+        instructions.insert({0x61, [](){ return new Register<0x61>(); }}); // Indirect X
+        instructions.insert({0x71, [](){ return new Register<0x71>(); }}); // Indirect Y
+
+        // SBC (Subtract Memory from Accumulator with Borrow)
+        instructions.insert({0xE9, [](){ return new Register<0xE9>(); }});
+        instructions.insert({0xE5, [](){ return new Register<0xE5>(); }});
+        instructions.insert({0xF5, [](){ return new Register<0xF5>(); }});
+        instructions.insert({0xED, [](){ return new Register<0xED>(); }});
+        instructions.insert({0xFD, [](){ return new Register<0xFD>(); }});
+        instructions.insert({0xF9, [](){ return new Register<0xF9>(); }});
+        instructions.insert({0xE1, [](){ return new Register<0xE1>(); }});
+        instructions.insert({0xF1, [](){ return new Register<0xF1>(); }});
+
+
+        // AND (AND Memory with Accumulator)
+        instructions.insert({0x29, [](){ return new Register<0x29>(); }});
+        instructions.insert({0x25, [](){ return new Register<0x25>(); }});
+        instructions.insert({0x35, [](){ return new Register<0x35>(); }});
+        instructions.insert({0x2D, [](){ return new Register<0x2D>(); }});
+        instructions.insert({0x3D, [](){ return new Register<0x3D>(); }});
+        instructions.insert({0x39, [](){ return new Register<0x39>(); }});
+        instructions.insert({0x21, [](){ return new Register<0x21>(); }});
+        instructions.insert({0x31, [](){ return new Register<0x31>(); }});
+
+        //  EOR (Exclusive-OR Memory withh Accumulator)
+        instructions.insert({0x49, [](){ return new Register<0x49>(); }});
+        instructions.insert({0x45, [](){ return new Register<0x45>(); }});
+        instructions.insert({0x55, [](){ return new Register<0x55>(); }});
+        instructions.insert({0x4D, [](){ return new Register<0x4D>(); }});
+        instructions.insert({0x5D, [](){ return new Register<0x5D>(); }});
+        instructions.insert({0x59, [](){ return new Register<0x59>(); }});
+        instructions.insert({0x41, [](){ return new Register<0x41>(); }});
+        instructions.insert({0x51, [](){ return new Register<0x51>(); }});
+
         // LSR (Shift One Bit Right)
         /*
         instructions.insert({0x4A, [](){ return new Register<0x4A>(); }});
@@ -148,8 +222,8 @@ public:
         
         if(!instructions.contains(opcode)){
             std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
-            exit(0);
-            return nullptr;
+            // exit(0);
+            // return nullptr;
         }
 
         std::function<BaseRegister*()> getInstruction = instructions[opcode];
