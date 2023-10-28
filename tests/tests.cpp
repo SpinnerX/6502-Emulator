@@ -12,7 +12,7 @@ using namespace boost::ut;
  * 
 */
 
-void checkingLDAInstructionCorrectness(CPU& cpu){
+void checkingLDAInstructionCorrectnessInit(CPU& cpu){
     BaseRegister* reg1 = cpu.decode<0xA9>();
     BaseRegister* reg2 = cpu.decode<0xA5>();
     BaseRegister* reg3 = cpu.decode<0xB5>();
@@ -22,23 +22,23 @@ void checkingLDAInstructionCorrectness(CPU& cpu){
     BaseRegister* reg7 = cpu.decode<0xA1>();
     BaseRegister* reg8 = cpu.decode<0xB1>();
 
-    InstructionTraits traitsMock1 = InstructionTraits(RegisterTypes::LDA, AddressModes::IMMEDIATE, 0xA9, 2, 2);
-    InstructionTraits traitsMock2 = InstructionTraits(RegisterTypes::LDA, AddressModes::ZPG, 0xA5, 2, 3);
-    InstructionTraits traitsMock3 = InstructionTraits(RegisterTypes::LDA, AddressModes::ZPG_X, 0xB5, 2, 4);
-    InstructionTraits traitsMock4 = InstructionTraits(RegisterTypes::LDA, AddressModes::ABS, 0xAD, 3, 4);
-    InstructionTraits traitsMock5 = InstructionTraits(RegisterTypes::LDA, AddressModes::ABSX, 0xBD, 3, 4);
-    InstructionTraits traitsMock6 = InstructionTraits(RegisterTypes::LDA, AddressModes::ABSY, 0xB9, 3, 4);
-    InstructionTraits traitsMock7 = InstructionTraits(RegisterTypes::LDA, AddressModes::INDIRECT_X, 0xA1, 2, 6);
-    InstructionTraits traitsMock8 = InstructionTraits(RegisterTypes::LDA, AddressModes::INDIRECT_Y, 0xB1, 2, 5);
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::LDA, AddressModes::IMMEDIATE, 0xA9, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::LDA, AddressModes::ZPG, 0xA5, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::LDA, AddressModes::ZPG_X, 0xB5, 2, 4);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::LDA, AddressModes::ABS, 0xAD, 3, 4);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::LDA, AddressModes::ABSX, 0xBD, 3, 4);
+    RegisterTraits traitsMock6 = RegisterTraits(RegisterTypes::LDA, AddressModes::ABSY, 0xB9, 3, 4);
+    RegisterTraits traitsMock7 = RegisterTraits(RegisterTypes::LDA, AddressModes::INDIRECT_X, 0xA1, 2, 6);
+    RegisterTraits traitsMock8 = RegisterTraits(RegisterTypes::LDA, AddressModes::INDIRECT_Y, 0xB1, 2, 5);
 
-    InstructionTraits actualTrait1 = reg1->data();
-    InstructionTraits actualTrait2 = reg2->data();
-    InstructionTraits actualTrait3 = reg3->data();
-    InstructionTraits actualTrait4 = reg4->data();
-    InstructionTraits actualTrait5 = reg5->data();
-    InstructionTraits actualTrait6 = reg6->data();
-    InstructionTraits actualTrait7 = reg7->data();
-    InstructionTraits actualTrait8 = reg8->data();
+    RegisterTraits actualTrait1 = reg1->data();
+    RegisterTraits actualTrait2 = reg2->data();
+    RegisterTraits actualTrait3 = reg3->data();
+    RegisterTraits actualTrait4 = reg4->data();
+    RegisterTraits actualTrait5 = reg5->data();
+    RegisterTraits actualTrait6 = reg6->data();
+    RegisterTraits actualTrait7 = reg7->data();
+    RegisterTraits actualTrait8 = reg8->data();
 
     /**
      * 
@@ -59,27 +59,100 @@ void checkingLDAInstructionCorrectness(CPU& cpu){
     };
 }
 
-void checkLDXInstructionCorrectness(CPU& cpu){
+void checkLDXInstructionCorrectnessInit(CPU& cpu){
     BaseRegister* reg1 = cpu.decode<0xA2>();
     BaseRegister* reg2 = cpu.decode<0xA6>();
+    BaseRegister* reg3 = cpu.decode<0xB6>();
+    BaseRegister* reg4 = cpu.decode<0xAE>();
+    BaseRegister* reg5 = cpu.decode<0xBE>();
 
-    InstructionTraits traitsMock1 = InstructionTraits(RegisterTypes::LDX, AddressModes::IMMEDIATE, 0xA2, 2, 2);
-    InstructionTraits traitsMock2 = InstructionTraits(RegisterTypes::LDX, AddressModes::ZPG, 0xA6, 2, 3);
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::LDX, AddressModes::IMMEDIATE, 0xA2, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::LDX, AddressModes::ZPG, 0xA6, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::LDX, AddressModes::ZPG_Y, 0xB6, 2, 4);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::LDX, AddressModes::ABS, 0xAE, 3, 4);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::LDX, AddressModes::ABSY, 0xBE, 3, 4);
 
-    InstructionTraits actualTrait1 = reg1->data();
-    InstructionTraits actualTrait2 = reg2->data();
+    RegisterTraits actualTrait1 = reg1->data();
+    RegisterTraits actualTrait2 = reg2->data();
+    RegisterTraits actualTrait3 = reg3->data();
+    RegisterTraits actualTrait4 = reg4->data();
+    RegisterTraits actualTrait5 = reg5->data();
 
 
-    "LDA_Register_Init_Test"_test = [&]{
+    "LDX_Register_Init_Test"_test = [&]{
         expect(actualTrait1 == traitsMock1);
         expect(actualTrait2 == traitsMock2);
+        expect(actualTrait3 == traitsMock3);
+        expect(actualTrait4 == traitsMock4);
+        expect(actualTrait5 == traitsMock5);
     };
 }
 
 
+void checkLDYInstructionCorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0xA0>();
+    BaseRegister* reg2 = cpu.decode<0xA4>();
+    BaseRegister* reg3 = cpu.decode<0xB4>();
+    BaseRegister* reg4 = cpu.decode<0xAC>();
+    BaseRegister* reg5 = cpu.decode<0xBC>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::LDY, AddressModes::IMMEDIATE, 0xA0, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::LDY, AddressModes::ZPG, 0xA4, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::LDY, AddressModes::ZPG_X, 0xB4, 2, 4);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::LDY, AddressModes::ABS, 0xAC, 3, 4);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::LDY, AddressModes::ABSX, 0xBC, 3, 4);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+
+    "LDY_Register_Init_Test"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+    };
+}
+
+
+void checkLSRInstructionCorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x4A>();
+    BaseRegister* reg2 = cpu.decode<0x46>();
+    BaseRegister* reg3 = cpu.decode<0x56>();
+    BaseRegister* reg4 = cpu.decode<0x4E>();
+    BaseRegister* reg5 = cpu.decode<0x5E>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::LSR, AddressModes::A, 0x4A, 1, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::LSR, AddressModes::ZPG, 0x46, 2, 5);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::LSR, AddressModes::ZPG_X, 0x56, 2, 6);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::LSR, AddressModes::ABS, 0x4E, 3, 6);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::LSR, AddressModes::ABSX, 0x5E, 3, 7);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+
+    
+    "LSR_Register_Init_Test"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+    };
+
+}
+
 int main() {
     CPU cpu;
 
-    checkingLDAInstructionCorrectness(cpu);
-    checkLDXInstructionCorrectness(cpu);
+    checkingLDAInstructionCorrectnessInit(cpu);
+    checkLDXInstructionCorrectnessInit(cpu);
+    checkLDYInstructionCorrectnessInit(cpu);
+    checkLSRInstructionCorrectnessInit(cpu);
 }
