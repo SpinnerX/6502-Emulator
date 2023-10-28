@@ -6,7 +6,10 @@ using namespace boost::ut;
 
 /**
  * 
- * Creating test cases
+ * 1.) Tests that end in Init.
+ *  - These test cases with Init at thhe end represent that they are intializer test cases
+ *  - Which test if the data corresponding with each of those types are set correctly
+ *  - Checking for data correctness, ensuring for accurate and correct values are being set
  * 
  * 
  * 
