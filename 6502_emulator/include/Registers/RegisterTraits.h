@@ -15,11 +15,11 @@
  * - Allowing to create generalized way of retrieving data based on opcode to Address Modes
  * 
 */
-struct InstructionTraits{
-    InstructionTraits() = default;
-    InstructionTraits(RegisterTypes type, AddressModes mode, opcode_t opcode, int bytes, int cycles) : type(type), mode(mode), opcode(opcode), bytes(bytes), cycles(cycles) { }
+struct RegisterTraits{
+    RegisterTraits() = default;
+    RegisterTraits(RegisterTypes type, AddressModes mode, opcode_t opcode, int bytes, int cycles) : type(type), mode(mode), opcode(opcode), bytes(bytes), cycles(cycles) { }
 
-    friend std::ostream& operator<<(std::ostream& outs, const InstructionTraits& traits){
+    friend std::ostream& operator<<(std::ostream& outs, const RegisterTraits& traits){
         outs << "--------- [";
         switch (traits.type){
         case RegisterTypes::ADC:
@@ -229,7 +229,7 @@ struct InstructionTraits{
 
     // Should be false if any of the followings false
     // Because we want to use this for checking if they have been initialized correctly, during setting up the emulator.
-    bool operator==(const InstructionTraits& other) const {
+    bool operator==(const RegisterTraits& other) const {
         // return ((type != other.type) || (mode != other.mode) || (bytes != other.bytes) || (cycles != other.cycles));
         if(type != other.type) return false;
         if(mode != other.mode) return false;
