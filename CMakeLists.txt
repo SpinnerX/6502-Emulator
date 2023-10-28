@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(PROJECT_INCLUDE_DIR 6502_emulator)
 
 
-find_package(formatCpp REQUIRED)
+# find_package(formatCpp REQUIRED)
 
 
 # Apply to single targets
@@ -92,7 +92,7 @@ add_test(
 
 # Cmake modules here
 # include(${PROJECT_SOURCE_DIR}/cmake/glfw.cmake)
-target_link_libraries(
-    ${PROJECT_NAME}
-    formatCpp
-)
+# target_link_libraries(
+#     ${PROJECT_NAME}
+#     formatCpp
+# )
