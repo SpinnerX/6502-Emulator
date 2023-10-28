@@ -17,7 +17,6 @@
 #include <common/types.h>
 #include <Registers/Registers.h>
 #include <Configurations/Memory.h>
-#include <formatCpp/formatCpp.h>
 
 /**
  * 
@@ -64,12 +63,27 @@ public:
         instructions.insert({0xB1, [](){ return new Register<0xB1>(); }}); //  INDIRECT Y
 
 
-        // LDX (Load Index Y with Memory) Instruction
+        // LDX (Load Index X with Memory) Instruction
         instructions.insert({0xA2, [](){ return new Register<0xA2>(); }});
         instructions.insert({0xA6, [](){ return new Register<0xA6>(); }});
         instructions.insert({0xB6, [](){ return new Register<0xB6>(); }});
         instructions.insert({0xAE, [](){ return new Register<0xAE>(); }});
         instructions.insert({0xBE, [](){ return new Register<0xBE>(); }});
+
+        // LDY (Load Index Y with Memory)
+        instructions.insert({0xA0, [](){ return new Register<0xA0>(); }});
+        instructions.insert({0xA4, [](){ return new Register<0xA4>(); }});
+        instructions.insert({0xB4, [](){ return new Register<0xB4>(); }});
+        instructions.insert({0xAC, [](){ return new Register<0xAC>(); }});
+        instructions.insert({0xBC, [](){ return new Register<0xBC>(); }});
+
+        // LSR (Shift One Bit Right)
+        instructions.insert({0x4A, [](){ return new Register<0x4A>(); }});
+        instructions.insert({0x46, [](){ return new Register<0x46>(); }});
+        instructions.insert({0x56, [](){ return new Register<0x56>(); }});
+        instructions.insert({0x4E, [](){ return new Register<0x4E>(); }});
+        instructions.insert({0x5E, [](){ return new Register<0x5E>(); }});
+
     }
 
 
@@ -96,11 +110,7 @@ public:
     BaseRegister* decode(){
         
         if(!instructions.contains(opcode)){
-            // formatCpp::print("Convert {} to hexadecimal to see what hex number this is\n", opcode);
-            formatCpp::print("Invalid opcode not found: ");
-            std::cout << reinterpret_cast<void *>(opcode);
-            formatCpp::print("\n");
-            formatCpp::print("ERROR OCCURED: INVALID OPCODE!\n");
+            std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
             exit(0);
             return nullptr;
         }
@@ -110,7 +120,7 @@ public:
 
 
         if(instruction == nullptr){
-            formatCpp::print("Nullptr detected in decode() in CPU class!\n");
+            std::cout << "Nullptr detected in decode() in CPU class!\n";
             return nullptr;
         }
 
