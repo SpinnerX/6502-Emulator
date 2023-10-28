@@ -48,6 +48,21 @@
  * 
 */
 
+/*
+
+
+// This is how we know the different states the bitfields are in, for each instruction
+// This shoiws what the bitfields states are in corresponding with those registers.
+Legend to Flags: +  ....  modified
+                 -  ....  not modified
+                 1  ....  set
+                 0  ....  cleared
+                 M6 ....  memory bit 6
+                 M7 ....  memory bit 7 
+
+
+*/
+
 class CPU{
 public:
     CPU(){
@@ -77,12 +92,34 @@ public:
         instructions.insert({0xAC, [](){ return new Register<0xAC>(); }});
         instructions.insert({0xBC, [](){ return new Register<0xBC>(); }});
 
+
+        // STA (Store Accumulator in Memory)
+        instructions.insert({0x85, [](){ return new Register<0x85>(); }});
+        instructions.insert({0x95, [](){ return new Register<0x95>(); }});
+        instructions.insert({0x8D, [](){ return new Register<0x8D>(); }});
+        instructions.insert({0x9D, [](){ return new Register<0x9D>(); }});
+        instructions.insert({0x99, [](){ return new Register<0x99>(); }});
+        instructions.insert({0x81, [](){ return new Register<0x81>(); }});
+        instructions.insert({0x91, [](){ return new Register<0x91>(); }});
+
+        // STX (Store X)
+        instructions.insert({0x86, [](){ return new Register<0x86>(); }});
+        instructions.insert({0x96, [](){ return new Register<0x96>(); }});
+        instructions.insert({0x8E, [](){ return new Register<0x8E>(); }});
+
+        // STY (Store Y)
+        instructions.insert({0x84, [](){ return new Register<0x84>(); }});
+        instructions.insert({0x94, [](){ return new Register<0x94>(); }});
+        instructions.insert({0x8C, [](){ return new Register<0x8C>(); }});
+
         // LSR (Shift One Bit Right)
+        /*
         instructions.insert({0x4A, [](){ return new Register<0x4A>(); }});
         instructions.insert({0x46, [](){ return new Register<0x46>(); }});
         instructions.insert({0x56, [](){ return new Register<0x56>(); }});
         instructions.insert({0x4E, [](){ return new Register<0x4E>(); }});
         instructions.insert({0x5E, [](){ return new Register<0x5E>(); }});
+        */
 
     }
 
