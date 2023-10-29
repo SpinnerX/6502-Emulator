@@ -480,8 +480,72 @@ void check_EOR_LogicalOperations_InstructionsCorrectnessInit(CPU& cpu){
 
 }
 
-/*
-void checkLSRInstructionCorrectnessInit(CPU& cpu){
+void check_ORA_LogicalOperations_InstructionsCorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x09>();
+    BaseRegister* reg2 = cpu.decode<0x05>();
+    BaseRegister* reg3 = cpu.decode<0x15>();
+    BaseRegister* reg4 = cpu.decode<0x0D>();
+    BaseRegister* reg5 = cpu.decode<0x1D>();
+    BaseRegister* reg6 = cpu.decode<0x19>();
+    BaseRegister* reg7 = cpu.decode<0x01>();
+    BaseRegister* reg8 = cpu.decode<0x11>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::ORA, AddressModes::IMMEDIATE, 0x09, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::ORA, AddressModes::ZPG, 0x05, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::ORA, AddressModes::ZPG_X, 0x15, 2, 4);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::ORA, AddressModes::ABS, 0x0D, 3, 4);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::ORA, AddressModes::ABSX, 0x1D, 3, 4);
+    RegisterTraits traitsMock6 = RegisterTraits(RegisterTypes::ORA, AddressModes::ABSY, 0x19, 3, 4);
+    RegisterTraits traitsMock7 = RegisterTraits(RegisterTypes::ORA, AddressModes::INDIRECT_X, 0x01, 2, 6);
+    RegisterTraits traitsMock8 = RegisterTraits(RegisterTypes::ORA, AddressModes::INDIRECT_Y, 0x01, 2, 5);
+
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+    RegisterTraits actualTraits6 = reg6->data();
+    RegisterTraits actualTraits7 = reg7->data();
+    RegisterTraits actualTraits8 = reg8->data();
+
+    "EOR_LogicalOperationsTests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+    };
+}
+
+void check_ASL_LogicalOperations_InstructionsCorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x0A>();
+    BaseRegister* reg2 = cpu.decode<0x06>();
+    BaseRegister* reg3 = cpu.decode<0x16>();
+    BaseRegister* reg4 = cpu.decode<0x0E>();
+    BaseRegister* reg5 = cpu.decode<0x1E>();
+
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::ASL, AddressModes::A, 0x0A, 1, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::ASL, AddressModes::ZPG, 0x06, 2, 5);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::ASL, AddressModes::ZPG_X, 0x16, 2, 6);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::ASL, AddressModes::ABS, 0x0E, 3, 6);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::ASL, AddressModes::ABSX, 0x1E, 3, 7);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+
+    "ASL_LogicalOperationsTests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+    };
+}
+
+void check_LSR_InstructionCorrectnessInit(CPU& cpu){
     BaseRegister* reg1 = cpu.decode<0x4A>();
     BaseRegister* reg2 = cpu.decode<0x46>();
     BaseRegister* reg3 = cpu.decode<0x56>();
@@ -510,7 +574,38 @@ void checkLSRInstructionCorrectnessInit(CPU& cpu){
     };
 
 }
-*/
+
+void check_ROL_InstructionCorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x2A>();
+    BaseRegister* reg2 = cpu.decode<0x26>();
+    BaseRegister* reg3 = cpu.decode<0x36>();
+    BaseRegister* reg4 = cpu.decode<0x2E>();
+    BaseRegister* reg5 = cpu.decode<0x3E>();
+
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::ROL, AddressModes::A, 0x2A, 1, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::ROL, AddressModes::ZPG, 0x26, 2, 5);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::ROL, AddressModes::ZPG_X, 0x36, 2, 6);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::ROL, AddressModes::ABS, 0x2E, 3, 6);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::ROL, AddressModes::ABSX, 0x3E, 3, 7);
+
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+
+
+    "ROL_LogicalOperationsTests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+    };
+}
+
 
 int main() {
     CPU cpu;
@@ -528,5 +623,9 @@ int main() {
     check_SBC_ArtihmeticOperations2_InstructionsCorrectnessInit(cpu);
     check_AND_LogicalOperations_InstructionsCorrectnessInit(cpu);
     check_EOR_LogicalOperations_InstructionsCorrectnessInit(cpu);
+    check_ORA_LogicalOperations_InstructionsCorrectnessInit(cpu);
+    check_ASL_LogicalOperations_InstructionsCorrectnessInit(cpu);
+    check_LSR_InstructionCorrectnessInit(cpu);
+    check_ROL_InstructionCorrectnessInit(cpu);
     // checkLSRInstructionCorrectnessInit(cpu);
 }
