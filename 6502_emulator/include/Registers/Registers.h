@@ -1872,16 +1872,271 @@ struct Register<0x51> : public BaseRegister{
 
 
 
+/**
+ * 
+ * ORA (Or Memory with Accumulator)
+ * - IMMEDIATE
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * - Absolute Y
+ * - Indirect X
+ * - Indirect Y
+ * 
+*/
+
+template<>
+struct Register<0x09> : public BaseRegister{
+     Register<0x09>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::IMMEDIATE, 0x09, 2, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x09>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x05> : public BaseRegister{
+     Register<0x05>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::ZPG, 0x05, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x05>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x15> : public BaseRegister{
+     Register<0x15>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::ZPG_X, 0x15, 2, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x15>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x0D> : public BaseRegister{
+     Register<0x0D>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::ABS, 0x0D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x0D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x1D> : public BaseRegister{
+     Register<0x1D>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::ABSX, 0x1D, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x1D>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x19> : public BaseRegister{
+     Register<0x19>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::ABSY, 0x19, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x19>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x01> : public BaseRegister{
+     Register<0x01>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::INDIRECT_X, 0x01, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x01>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x11> : public BaseRegister{
+     Register<0x11>(){
+        traits = RegisterTraits(RegisterTypes::ORA, AddressModes::INDIRECT_Y, 0x11, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x11>& ins){
+        return outs;
+    }
+};
 
 
 
 
+/** Shihft & Rotate Instructions **/
+
+/**
+ * 
+ * ASL (Shift Left One Bit(Memory or Accumulator) )
+ * - Accumulator (A)
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * 
+*/
 
 
+template<>
+struct Register<0x0A> : public BaseRegister{
+     Register<0x0A>(){
+        traits = RegisterTraits(RegisterTypes::ASL, AddressModes::A, 0x0A, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x0A>& ins){
+        return outs;
+    }
+};
 
 
+template<>
+struct Register<0x06> : public BaseRegister{
+     Register<0x06>(){
+        traits = RegisterTraits(RegisterTypes::ASL, AddressModes::ZPG, 0x06, 2, 5);
+    }
 
+    void execute(){
+    }
 
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x06>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x16> : public BaseRegister{
+     Register<0x16>(){
+        traits = RegisterTraits(RegisterTypes::ASL, AddressModes::ZPG_X, 0x16, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x16>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x0E> : public BaseRegister{
+     Register<0x0E>(){
+        traits = RegisterTraits(RegisterTypes::ASL, AddressModes::ABS, 0x0E, 3, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x0E>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x1E> : public BaseRegister{
+     Register<0x1E>(){
+        traits = RegisterTraits(RegisterTypes::ASL, AddressModes::ABSX, 0x1E, 3, 7);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x1E>& ins){
+        return outs;
+    }
+};
 
 /**
  * 
@@ -1895,8 +2150,6 @@ struct Register<0x51> : public BaseRegister{
  * 
 */
 
-/*
-* LSR Implementation may come back to this
 template<>
 struct Register<0x4A> : public BaseRegister{
      Register<0x4A>(){
@@ -1914,7 +2167,6 @@ struct Register<0x4A> : public BaseRegister{
         return outs;
     }
 };
-
 
 template<>
 struct Register<0x46> : public BaseRegister{
@@ -1988,4 +2240,104 @@ struct Register<0x5E> : public BaseRegister{
     }
 };
 
+
+/**
+ * 
+ * ROL (Rotate One Bit Left (Memory or Accumulator) )
+ * - Accumulator (A)
+ * - ZeroPage
+ * - ZeroPage X
+ * - Absolute
+ * - Absolute X
+ * 
 */
+
+template<>
+struct Register<0x2A> : public BaseRegister{
+     Register<0x2A>(){
+        traits = RegisterTraits(RegisterTypes::ROL, AddressModes::A, 0x2A, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x2A>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x26> : public BaseRegister{
+     Register<0x26>(){
+        traits = RegisterTraits(RegisterTypes::ROL, AddressModes::ZPG, 0x26, 2, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x26>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x36> : public BaseRegister{
+     Register<0x36>(){
+        traits = RegisterTraits(RegisterTypes::ROL, AddressModes::ZPG_X, 0x36, 2, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x36>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x2E> : public BaseRegister{
+     Register<0x2E>(){
+        traits = RegisterTraits(RegisterTypes::ROL, AddressModes::ABS, 0x2E, 3, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x2E>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x3E> : public BaseRegister{
+     Register<0x3E>(){
+        traits = RegisterTraits(RegisterTypes::ROL, AddressModes::ABSX, 0x3E, 3, 7);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x3E>& ins){
+        return outs;
+    }
+};
