@@ -4,7 +4,11 @@
 using namespace std;
 using namespace boost::ut;
 
-
+/**
+ * 
+ * Idea (for having a script generate test cases for initializing test cases)
+ * 
+*/
 
 /**
  * 
@@ -18,11 +22,6 @@ using namespace boost::ut;
  * 
  * 
 */
-
-// Hhello
-
-
-
 
 /** These are test cases for Transfer Instructions such as Loading, Storing, and Interregister transfers. **/
 void checking_LDA_InstructionCorrectnessInit(CPU& cpu){
@@ -514,6 +513,11 @@ void check_ORA_LogicalOperations_InstructionsCorrectnessInit(CPU& cpu){
         expect(actualTraits1 == traitsMock1);
         expect(actualTraits2 == traitsMock2);
         expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+        expect(actualTraits6 == traitsMock6);
+        expect(actualTraits7 == traitsMock7);
+        expect(actualTraits8 == traitsMock8);
     };
 }
 
@@ -607,15 +611,205 @@ void check_ROL_InstructionCorrectnessInit(CPU& cpu){
     };
 }
 
+void check_ROR_InstructionCorrectnessInit(CPU& cpu){
+    
+    BaseRegister* reg1 = cpu.decode<0x6A>();
+    BaseRegister* reg2 = cpu.decode<0x66>();
+    BaseRegister* reg3 = cpu.decode<0x76>();
+    BaseRegister* reg4 = cpu.decode<0x6E>();
+    BaseRegister* reg5 = cpu.decode<0x7E>();
+
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::ROR, AddressModes::A, 0x6A, 1, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::ROR, AddressModes::ZPG, 0x66, 2, 5);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::ROR, AddressModes::ZPG_X, 0x76, 2, 6);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::ROR, AddressModes::ABS, 0x6E, 3, 6);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::ROR, AddressModes::ABSX, 0x7E, 3, 7);
+
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+
+    "ROR_ShiftOperationsTests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+    };
+}
+
+
+void check_FlagsInstruction_CorrectnessInit(CPU& cpu){
+    
+    // In this one test case we are testing both instructions since, there are only one address modes each
+    // Testing registers, CLC, CLD, CLI, CLV, SEC, SED, SEI
+
+    BaseRegister* reg1 = cpu.decode<0x18>();
+    BaseRegister* reg2 = cpu.decode<0xD8>();
+    BaseRegister* reg3 = cpu.decode<0x58>();
+    BaseRegister* reg4 = cpu.decode<0xB8>();
+    BaseRegister* reg5 = cpu.decode<0x38>();
+    BaseRegister* reg6 = cpu.decode<0xF8>();
+    BaseRegister* reg7 = cpu.decode<0x78>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::CLC, AddressModes::IMPLIED, 0x18, 1, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::CLD, AddressModes::IMPLIED, 0xD8, 1, 2);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::CLI, AddressModes::IMPLIED, 0x58, 1, 2);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::CLV, AddressModes::IMPLIED, 0xB8, 1, 2);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::SEC, AddressModes::IMPLIED, 0x38, 1, 2);
+    RegisterTraits traitsMock6 = RegisterTraits(RegisterTypes::SED, AddressModes::IMPLIED, 0xF8, 1, 2);
+    RegisterTraits traitsMock7 = RegisterTraits(RegisterTypes::SEI, AddressModes::IMPLIED, 0x78, 1, 2);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+    RegisterTraits actualTraits6 = reg6->data();
+    RegisterTraits actualTraits7 = reg7->data();
 
 
 
+    "FlagInstructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+        expect(actualTraits6 == traitsMock6);
+        expect(actualTraits7 == traitsMock7);
+    };
+}
+
+void check_CMP_Instruction_CorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0xC9>();
+    BaseRegister* reg2 = cpu.decode<0xC5>();
+    BaseRegister* reg3 = cpu.decode<0xD5>();
+    BaseRegister* reg4 = cpu.decode<0xCD>();
+    BaseRegister* reg5 = cpu.decode<0xDD>();
+    BaseRegister* reg6 = cpu.decode<0xD9>();
+    BaseRegister* reg7 = cpu.decode<0xC1>();
+    BaseRegister* reg8 = cpu.decode<0xD1>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::CMP, AddressModes::IMMEDIATE, 0xC9, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::CMP, AddressModes::ZPG, 0xC5, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::CMP, AddressModes::ZPG_X, 0xD5, 2, 4);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::CMP, AddressModes::ABS, 0xCD, 3, 4);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::CMP, AddressModes::ABSX, 0xDD, 3, 4);
+    RegisterTraits traitsMock6 = RegisterTraits(RegisterTypes::CMP, AddressModes::ABSY, 0xD9, 3, 4);
+    RegisterTraits traitsMock7 = RegisterTraits(RegisterTypes::CMP, AddressModes::INDIRECT_X, 0xC1, 2, 6);
+    RegisterTraits traitsMock8 = RegisterTraits(RegisterTypes::CMP, AddressModes::INDIRECT_Y, 0xD1, 2, 5);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+    RegisterTraits actualTraits6 = reg6->data();
+    RegisterTraits actualTraits7 = reg7->data();
+    RegisterTraits actualTraits8 = reg8->data();
 
 
+    "CMP_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+        expect(actualTraits6 == traitsMock6);
+        expect(actualTraits7 == traitsMock7);
+        expect(actualTraits8 == traitsMock8);
+    };
+}
 
+void check_CPX_Instruction_CorrectnessInit(CPU& cpu){
 
+    BaseRegister* reg1 = cpu.decode<0xE0>();
+    BaseRegister* reg2 = cpu.decode<0xE4>();
+    BaseRegister* reg3 = cpu.decode<0xEC>();
 
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::CPX, AddressModes::IMMEDIATE, 0xE0, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::CPX, AddressModes::ZPG, 0xE4, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::CPX, AddressModes::ABS, 0xEC, 3, 4);
 
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+
+    "CPX_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+    };
+}
+
+void check_CPY_Instruction_CorrectnessInit(CPU& cpu){
+
+    BaseRegister* reg1 = cpu.decode<0xC0>();
+    BaseRegister* reg2 = cpu.decode<0xC4>();
+    BaseRegister* reg3 = cpu.decode<0xCC>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::CPY, AddressModes::IMMEDIATE, 0xC0, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::CPY, AddressModes::ZPG, 0xC4, 2, 3);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::CPY, AddressModes::ABS, 0xCC, 3, 4);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+
+    "CPX_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+    };
+}
+
+void check_ConditionalBranch_Instruction_CorrectnessInit(CPU& cpu){
+    // Testing all branch registers under one test case, since they only have one address mode
+    // Address Mode: RELATIVE
+
+    BaseRegister* reg1 = cpu.decode<0x90>();
+    BaseRegister* reg2 = cpu.decode<0xB0>();
+    BaseRegister* reg3 = cpu.decode<0xF0>();
+    BaseRegister* reg4 = cpu.decode<0x30>();
+    BaseRegister* reg5 = cpu.decode<0xD0>();
+    BaseRegister* reg6 = cpu.decode<0x10>();
+    BaseRegister* reg7 = cpu.decode<0x50>();
+    BaseRegister* reg8 = cpu.decode<0x70>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::BCC, AddressModes::RELATIVE, 0x90, 2, 2);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::BCS, AddressModes::RELATIVE, 0xB0, 2, 2);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::BEQ, AddressModes::RELATIVE, 0xF0, 2, 2);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::BMI, AddressModes::RELATIVE, 0x30, 2, 2);
+    RegisterTraits traitsMock5 = RegisterTraits(RegisterTypes::BNE, AddressModes::RELATIVE, 0xD0, 2, 2);
+    RegisterTraits traitsMock6 = RegisterTraits(RegisterTypes::BPL, AddressModes::RELATIVE, 0x10, 2, 2);
+    RegisterTraits traitsMock7 = RegisterTraits(RegisterTypes::BVC, AddressModes::RELATIVE, 0x50, 2, 2);
+    RegisterTraits traitsMock8 = RegisterTraits(RegisterTypes::BVS, AddressModes::RELATIVE, 0x70, 2, 2);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+    RegisterTraits actualTraits5 = reg5->data();
+    RegisterTraits actualTraits6 = reg6->data();
+    RegisterTraits actualTraits7 = reg7->data();
+    RegisterTraits actualTraits8 = reg8->data();
+
+    "ConditionalBranch_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+        expect(actualTraits5 == traitsMock5);
+        expect(actualTraits6 == traitsMock6);
+        expect(actualTraits7 == traitsMock7);
+        expect(actualTraits8 == traitsMock8);
+    };
+}
 
 
 /*
@@ -643,4 +837,10 @@ void runRegistersInitializedTestsInit(CPU& cpu) {
     check_ASL_LogicalOperations_InstructionsCorrectnessInit(cpu);
     check_LSR_InstructionCorrectnessInit(cpu);
     check_ROL_InstructionCorrectnessInit(cpu);
+    check_ROR_InstructionCorrectnessInit(cpu);
+    check_FlagsInstruction_CorrectnessInit(cpu);
+    check_CMP_Instruction_CorrectnessInit(cpu);
+    check_CPX_Instruction_CorrectnessInit(cpu);
+    check_ConditionalBranch_Instruction_CorrectnessInit(cpu);
+
 }
