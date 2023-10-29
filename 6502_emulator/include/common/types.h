@@ -124,7 +124,7 @@ enum class AddressModes{
     ABSY,               // Absolute, Y => Absolute, Y-indexed
     IMMEDIATE,          // means immediate
     IMPLIED,               // implied
-    IND,                // indirect
+    INDIRECT,                // indirect
     INDIRECT_X,         // x-indexed, indirect
     INDIRECT_Y,         // indirect, y-indexed
     RELATIVE,                // Relative
