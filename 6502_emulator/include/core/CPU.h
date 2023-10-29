@@ -219,6 +219,53 @@ public:
         instructions.insert({0x2E, [](){ return new Register<0x2E>(); }});
         instructions.insert({0x3E, [](){ return new Register<0x3E>(); }});
 
+
+        // ROR (Rotate One Bit Right (Memory or Accumulator) )
+        instructions.insert({0x6A, [](){ return new Register<0x6A>(); }});
+        instructions.insert({0x66, [](){ return new Register<0x66>(); }});
+        instructions.insert({0x76, [](){ return new Register<0x76>(); }});
+        instructions.insert({0x6E, [](){ return new Register<0x6E>(); }});
+        instructions.insert({0x7E, [](){ return new Register<0x7E>(); }});
+
+        // Transfer Instructions (only have one address modes, IMPLIED)
+        instructions.insert({0x18, [](){ return new Register<0x18>(); }}); // CLC .. clears carry
+        instructions.insert({0xD8, [](){ return new Register<0xD8>(); }}); // CLD .. clears decimal (BCD arithmetics disabled)
+        instructions.insert({0x58, [](){ return new Register<0x58>(); }}); // CLI .. clears interrupt disabled
+        instructions.insert({0xB8, [](){ return new Register<0xB8>(); }}); // CLV .. clears overflow
+        instructions.insert({0x38, [](){ return new Register<0x38>(); }}); // SEC .. sets carry
+        instructions.insert({0xF8, [](){ return new Register<0xF8>(); }}); // SED .. sets decimal (BCD arithmetics enabled)
+        instructions.insert({0x78, [](){ return new Register<0x78>(); }}); // SEI .. sets interrupt disable
+
+        // CMP (Compare Memory with Accumulator)
+        instructions.insert({0xC9, [](){ return new Register<0xC9>(); }});
+        instructions.insert({0xC5, [](){ return new Register<0xC5>(); }});
+        instructions.insert({0xD5, [](){ return new Register<0xD5>(); }});
+        instructions.insert({0xCD, [](){ return new Register<0xCD>(); }});
+        instructions.insert({0xDD, [](){ return new Register<0xDD>(); }});
+        instructions.insert({0xD9, [](){ return new Register<0xD9>(); }});
+        instructions.insert({0xC1, [](){ return new Register<0xC1>(); }});
+        instructions.insert({0xD1, [](){ return new Register<0xD1>(); }});
+
+        // CPX (Compare Memory and Index X)
+        instructions.insert({0xE0, [](){ return new Register<0xE0>(); }});
+        instructions.insert({0xE4, [](){ return new Register<0xE4>(); }});
+        instructions.insert({0xEC, [](){ return new Register<0xEC>(); }});
+
+        // CPY (Compare Memory and Index Y)
+        instructions.insert({0xC0, [](){ return new Register<0xC0>(); }});
+        instructions.insert({0xC4, [](){ return new Register<0xC4>(); }});
+        instructions.insert({0xCC, [](){ return new Register<0xCC>(); }});
+
+        // Branch Instructions
+        instructions.insert({0x90, [](){ return new Register<0x90>(); }});
+        instructions.insert({0xB0, [](){ return new Register<0xB0>(); }});
+        instructions.insert({0xF0, [](){ return new Register<0xF0>(); }});
+        instructions.insert({0x30, [](){ return new Register<0x30>(); }});
+        instructions.insert({0xD0, [](){ return new Register<0xD0>(); }});
+        instructions.insert({0x10, [](){ return new Register<0x10>(); }});
+        instructions.insert({0x50, [](){ return new Register<0x50>(); }});
+        instructions.insert({0x70, [](){ return new Register<0x70>(); }});
+
     }
 
 
