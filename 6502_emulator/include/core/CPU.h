@@ -257,14 +257,14 @@ public:
         instructions.insert({0xCC, [](){ return new Register<0xCC>(); }});
 
         // Branch Instructions
-        instructions.insert({0x90, [](){ return new Register<0x90>(); }});
-        instructions.insert({0xB0, [](){ return new Register<0xB0>(); }});
-        instructions.insert({0xF0, [](){ return new Register<0xF0>(); }});
-        instructions.insert({0x30, [](){ return new Register<0x30>(); }});
-        instructions.insert({0xD0, [](){ return new Register<0xD0>(); }});
-        instructions.insert({0x10, [](){ return new Register<0x10>(); }});
-        instructions.insert({0x50, [](){ return new Register<0x50>(); }});
-        instructions.insert({0x70, [](){ return new Register<0x70>(); }});
+        instructions.insert({0x90, [](){ return new Register<0x90>(); }}); // BCC .... Branch on Carry Clear
+        instructions.insert({0xB0, [](){ return new Register<0xB0>(); }}); // BCS .... Branch on Carry Set
+        instructions.insert({0xF0, [](){ return new Register<0xF0>(); }}); // BEQ .... Branchh on Equal (zero set)
+        instructions.insert({0x30, [](){ return new Register<0x30>(); }}); // BMI .... Branch on minus (negative set)
+        instructions.insert({0xD0, [](){ return new Register<0xD0>(); }}); // BNE .... Branch on not equal (zero clear)
+        instructions.insert({0x10, [](){ return new Register<0x10>(); }}); // BPL .... Branch on plus (negative clear)
+        instructions.insert({0x50, [](){ return new Register<0x50>(); }}); // BVC .... Branch on overflow clear
+        instructions.insert({0x70, [](){ return new Register<0x70>(); }}); // BVS .... Branch on overflow set
 
     }
 
