@@ -17,6 +17,8 @@
 #include <common/types.h>
 #include <Registers/Registers.h>
 #include <Configurations/Memory.h>
+#include <sstream>
+#include <cassert>
 
 /**
  * 
@@ -186,14 +188,36 @@ public:
         instructions.insert({0x41, [](){ return new Register<0x41>(); }});
         instructions.insert({0x51, [](){ return new Register<0x51>(); }});
 
+        // ORA (Or Memory withAccumulator)
+        instructions.insert({0x09, [](){ return new Register<0x09>(); }});
+        instructions.insert({0x05, [](){ return new Register<0x05>(); }});
+        instructions.insert({0x15, [](){ return new Register<0x15>(); }});
+        instructions.insert({0x0D, [](){ return new Register<0x0D>(); }});
+        instructions.insert({0x1D, [](){ return new Register<0x1D>(); }});
+        instructions.insert({0x19, [](){ return new Register<0x19>(); }});
+        instructions.insert({0x01, [](){ return new Register<0x01>(); }});
+        instructions.insert({0x11, [](){ return new Register<0x11>(); }});
+
+        // ASL (Shit Left One Bit (Memory or Accumulator) )
+        instructions.insert({0x0A, [](){ return new Register<0x0A>(); }});
+        instructions.insert({0x06, [](){ return new Register<0x06>(); }});
+        instructions.insert({0x16, [](){ return new Register<0x16>(); }});
+        instructions.insert({0x0E, [](){ return new Register<0x0E>(); }});
+        instructions.insert({0x1E, [](){ return new Register<0x1E>(); }});
+
         // LSR (Shift One Bit Right)
-        /*
         instructions.insert({0x4A, [](){ return new Register<0x4A>(); }});
         instructions.insert({0x46, [](){ return new Register<0x46>(); }});
         instructions.insert({0x56, [](){ return new Register<0x56>(); }});
         instructions.insert({0x4E, [](){ return new Register<0x4E>(); }});
         instructions.insert({0x5E, [](){ return new Register<0x5E>(); }});
-        */
+
+        // ROL (Rotate One Bit Left (Memory or Accumulator) )
+        instructions.insert({0x2A, [](){ return new Register<0x2A>(); }});
+        instructions.insert({0x26, [](){ return new Register<0x26>(); }});
+        instructions.insert({0x36, [](){ return new Register<0x36>(); }});
+        instructions.insert({0x2E, [](){ return new Register<0x2E>(); }});
+        instructions.insert({0x3E, [](){ return new Register<0x3E>(); }});
 
     }
 
@@ -219,16 +243,16 @@ public:
 
     template<opcode_t opcode>
     BaseRegister* decode(){
-        
+
         if(!instructions.contains(opcode)){
             std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
-            // exit(0);
-            // return nullptr;
+            // int checkExistance =  (!instructions.contains(opcode));
+            // static_assert(static_cast<int>((!instructions.contains(opcode))), "Opcode is Invalid or does not exist!\n");
+            return nullptr;
         }
 
         std::function<BaseRegister*()> getInstruction = instructions[opcode];
         BaseRegister* instruction = getInstruction();
-
 
         if(instruction == nullptr){
             std::cout << "Nullptr detected in decode() in CPU class!\n";
