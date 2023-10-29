@@ -3110,3 +3110,227 @@ struct Register<0x70> : public BaseRegister{
         return outs;
     }
 };
+
+
+/** Jump and Subroutines **/
+
+/**
+ * 
+ * JMP (Jump to New Location)
+ * - Absolute
+ * - Indirect
+ * 
+*/
+
+template<>
+struct Register<0x4C> : public BaseRegister{
+    Register<0x4C>(){
+        traits = RegisterTraits(RegisterTypes::JMP, AddressModes::ABS, 0x4C, 3, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x4C>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x6C> : public BaseRegister{
+    Register<0x6C>(){
+        traits = RegisterTraits(RegisterTypes::JMP, AddressModes::INDIRECT, 0x6C, 3, 5);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x6C>& ins){
+        return outs;
+    }
+};
+
+
+
+/**
+ * 
+ * JSR (Jump to New Location Saving Return Address)
+ * - Absolute
+ * 
+*/
+
+template<>
+struct Register<0x20> : public BaseRegister{
+    Register<0x20>(){
+        traits = RegisterTraits(RegisterTypes::JSR, AddressModes::ABS, 0x20, 3, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x20>& ins){
+        return outs;
+    }
+};
+
+
+
+/**
+ * 
+ * RTS (Return from Subroutine)
+ * - IMPLIED
+ * 
+*/
+
+template<>
+struct Register<0x60> : public BaseRegister{
+    Register<0x60>(){
+        traits = RegisterTraits(RegisterTypes::RTS, AddressModes::IMPLIED, 0x60, 1, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x60>& ins){
+        return outs;
+    }
+};
+
+
+/** Interrupts **/
+
+/**
+ * 
+ * BRK (Force Break)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x00> : public BaseRegister{
+    Register<0x00>(){
+        traits = RegisterTraits(RegisterTypes::BRK, AddressModes::IMPLIED, 0x00, 1, 7);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x00>& ins){
+        return outs;
+    }
+};
+
+/**
+ * 
+ * RTI (Return from Interrupt)
+ * - IMPLIED
+ * 
+*/
+template<>
+struct Register<0x40> : public BaseRegister{
+    Register<0x40>(){
+        traits = RegisterTraits(RegisterTypes::RTI, AddressModes::IMPLIED, 0x40, 1, 6);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x40>& ins){
+        return outs;
+    }
+};
+
+
+/** Other Instruction Options **/
+
+/**
+ * 
+ * BIT (Test Bits in Memory with Accumulator)
+ * - ZeroPage
+ * - Absolute
+ * 
+*/
+
+template<>
+struct Register<0x24> : public BaseRegister{
+    Register<0x24>(){
+        traits = RegisterTraits(RegisterTypes::BIT, AddressModes::ZPG, 0x24, 2, 3);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x24>& ins){
+        return outs;
+    }
+};
+
+template<>
+struct Register<0x2C> : public BaseRegister{
+    Register<0x2C>(){
+        traits = RegisterTraits(RegisterTypes::BIT, AddressModes::ABS, 0x2C, 3, 4);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0x2C>& ins){
+        return outs;
+    }
+};
+
+/**
+ * 
+ * NOP (No Operation)
+ * - ZeroPage
+ * - Absolute
+ * 
+*/
+template<>
+struct Register<0xEA> : public BaseRegister{
+    Register<0xEA>(){
+        traits = RegisterTraits(RegisterTypes::NOP, AddressModes::IMPLIED, 0xEA, 1, 2);
+    }
+
+    void execute(){
+    }
+
+    RegisterTraits data() override {
+        return traits;
+    }
+
+    friend std::ostream& operator<<(std::ostream& outs, Register<0xEA>& ins){
+        return outs;
+    }
+};
