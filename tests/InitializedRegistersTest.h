@@ -1,6 +1,9 @@
 #pragma once
 #include "boost/ut.hpp"
 #include <core/CPU.h>
+#include <exception>
+#include <stdexcept>
+
 using namespace std;
 using namespace boost::ut;
 
@@ -771,7 +774,6 @@ void check_CPY_Instruction_CorrectnessInit(CPU& cpu){
 void check_ConditionalBranch_Instruction_CorrectnessInit(CPU& cpu){
     // Testing all branch registers under one test case, since they only have one address mode
     // Address Mode: RELATIVE
-
     BaseRegister* reg1 = cpu.decode<0x90>();
     BaseRegister* reg2 = cpu.decode<0xB0>();
     BaseRegister* reg3 = cpu.decode<0xF0>();
@@ -811,6 +813,50 @@ void check_ConditionalBranch_Instruction_CorrectnessInit(CPU& cpu){
     };
 }
 
+void check_JumpsAndSubroutines_Instruction_CorrectnessInit(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x4C>();
+    BaseRegister* reg2 = cpu.decode<0x6C>();
+    BaseRegister* reg3 = cpu.decode<0x20>();
+    BaseRegister* reg4 = cpu.decode<0x60>();
+    
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::JMP, AddressModes::ABS, 0x4C, 3, 3);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::JMP, AddressModes::INDIRECT, 0x6C, 3, 5);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::JSR, AddressModes::ABS, 0x20, 3, 6);
+    RegisterTraits traitsMock4 = RegisterTraits(RegisterTypes::RTS, AddressModes::IMPLIED, 0x60, 1, 6);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+    RegisterTraits actualTraits4 = reg4->data();
+
+    "JumpsAndSubroutines_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+        expect(actualTraits4 == traitsMock4);
+    };
+}
+
+void check_OtherInstructions_Init(CPU& cpu){
+    BaseRegister* reg1 = cpu.decode<0x24>();
+    BaseRegister* reg2 = cpu.decode<0x2C>();
+    BaseRegister* reg3 = cpu.decode<0xEA>();
+
+    RegisterTraits traitsMock1 = RegisterTraits(RegisterTypes::BIT, AddressModes::ZPG, 0x24, 2, 3);
+    RegisterTraits traitsMock2 = RegisterTraits(RegisterTypes::BIT, AddressModes::ABS, 0x24, 3, 4);
+    RegisterTraits traitsMock3 = RegisterTraits(RegisterTypes::NOP, AddressModes::IMPLIED, 0x2C, 1, 2);
+
+    RegisterTraits actualTraits1 = reg1->data();
+    RegisterTraits actualTraits2 = reg2->data();
+    RegisterTraits actualTraits3 = reg3->data();
+
+
+    "JumpsAndSubroutines_Instructions_Tests"_test = [&]{
+        expect(actualTraits1 == traitsMock1);
+        expect(actualTraits2 == traitsMock2);
+        expect(actualTraits3 == traitsMock3);
+    };
+}
 
 /*
 * Running registers, checking if the data corresponding to their opcodes are set correctly
@@ -842,5 +888,7 @@ void runRegistersInitializedTestsInit(CPU& cpu) {
     check_CMP_Instruction_CorrectnessInit(cpu);
     check_CPX_Instruction_CorrectnessInit(cpu);
     check_ConditionalBranch_Instruction_CorrectnessInit(cpu);
+    check_JumpsAndSubroutines_Instruction_CorrectnessInit(cpu);
+    check_OtherInstructions_Init(cpu);
 
 }
