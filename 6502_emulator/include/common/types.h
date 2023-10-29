@@ -127,7 +127,7 @@ enum class AddressModes{
     IND,                // indirect
     INDIRECT_X,         // x-indexed, indirect
     INDIRECT_Y,         // indirect, y-indexed
-    REL,                // Relative
+    RELATIVE,                // Relative
     ZPG,                // zeropage
     ZPG_X,              // Zeropage, X-indexed
     ZPG_Y,              // Zeropage, Y-indexed
