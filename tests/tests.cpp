@@ -536,7 +536,7 @@ void check_ASL_LogicalOperations_InstructionsCorrectnessInit(CPU& cpu){
     RegisterTraits actualTraits4 = reg4->data();
     RegisterTraits actualTraits5 = reg5->data();
 
-    "ASL_LogicalOperationsTests"_test = [&]{
+    "ASL_ShiftOperationsTests"_test = [&]{
         expect(actualTraits1 == traitsMock1);
         expect(actualTraits2 == traitsMock2);
         expect(actualTraits3 == traitsMock3);
@@ -565,7 +565,7 @@ void check_LSR_InstructionCorrectnessInit(CPU& cpu){
     RegisterTraits actualTraits5 = reg5->data();
 
     
-    "LSR_Register_Init_Test"_test = [&]{
+    "LSR_ShiftOperationsTests"_test = [&]{
         expect(actualTraits1 == traitsMock1);
         expect(actualTraits2 == traitsMock2);
         expect(actualTraits3 == traitsMock3);
@@ -597,7 +597,7 @@ void check_ROL_InstructionCorrectnessInit(CPU& cpu){
     RegisterTraits actualTraits5 = reg5->data();
 
 
-    "ROL_LogicalOperationsTests"_test = [&]{
+    "ROL_ShiftOperationsTests"_test = [&]{
         expect(actualTraits1 == traitsMock1);
         expect(actualTraits2 == traitsMock2);
         expect(actualTraits3 == traitsMock3);
