@@ -19,6 +19,10 @@
 #include <Configurations/Memory.h>
 #include <sstream>
 #include <cassert>
+#include <sys/cdefs.h>
+#ifdef __cplusplus
+#include <stdlib.h>
+#endif
 
 /**
  * 
@@ -266,6 +270,22 @@ public:
         instructions.insert({0x50, [](){ return new Register<0x50>(); }}); // BVC .... Branch on overflow clear
         instructions.insert({0x70, [](){ return new Register<0x70>(); }}); // BVS .... Branch on overflow set
 
+        // Jump and Subroutine Instructions
+        // JMP
+        instructions.insert({0x4C, [](){ return new Register<0x4C>(); }}); // ABSOLUTE
+        instructions.insert({0x6C, [](){ return new Register<0x6C>(); }}); // INDIRECT
+        instructions.insert({0x20, [](){ return new Register<0x20>(); }}); // JSR - ABSOLUTE
+        instructions.insert({0x60, [](){ return new Register<0x60>(); }}); // RTS - IMPLIED
+
+        // Interrupts
+        instructions.insert({0x00, [](){ return new Register<0x00>(); }}); // BRK (Force Break)
+        instructions.insert({0x00, [](){ return new Register<0x40>(); }}); // RTI ( return from Interrupt)
+
+        // Other Operation Instructions
+        instructions.insert({0x24, [](){ return new Register<0x24>(); }});
+        instructions.insert({0x2C, [](){ return new Register<0x2C>(); }});
+        instructions.insert({0xEA, [](){ return new Register<0xEA>(); }});
+
     }
 
 
@@ -290,21 +310,18 @@ public:
 
     template<opcode_t opcode>
     BaseRegister* decode(){
-
+        // We want to check if the register is in the lookup table
+        // Knowing if its not in the lookup then no need to continue, and throw an assert.
         if(!instructions.contains(opcode)){
-            std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
-            // int checkExistance =  (!instructions.contains(opcode));
-            // static_assert(static_cast<int>((!instructions.contains(opcode))), "Opcode is Invalid or does not exist!\n");
+            // std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
+            // std::stringstream ss;
+            // ss << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
+            // assert((void("Invalid opcode does not exist in registers lookup table!"), instructions.contains(opcode))); //???
             return nullptr;
         }
 
         std::function<BaseRegister*()> getInstruction = instructions[opcode];
         BaseRegister* instruction = getInstruction();
-
-        if(instruction == nullptr){
-            std::cout << "Nullptr detected in decode() in CPU class!\n";
-            return nullptr;
-        }
 
         return instruction;
     }
