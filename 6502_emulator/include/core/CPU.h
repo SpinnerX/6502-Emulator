@@ -1,28 +1,11 @@
 #pragma once
 #include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <array>
-#include <ctime>
-#include <stdio.h>
-#include <unistd.h>
-#include <map>
-#include <set>
 #include <unordered_map>
-#include <fcntl.h>
 #include <functional>
-#include <bit>
-#include <cstdint>
-#include <numeric>
+#include <stack>
 #include <common/types.h>
 #include <Registers/Registers.h>
 #include <Configurations/Memory.h>
-#include <sstream>
-#include <cassert>
-#include <sys/cdefs.h>
-#ifdef __cplusplus
-#include <stdlib.h>
-#endif
 
 /**
  * 
@@ -49,10 +32,23 @@
  * 4.) Once, we can confirm these are working then continue to looking at cleaning up the code base/reformatting file structure
  * 
  * 
+ * Memory
+ * - The CPU does not know how memory addresses are designed
+ * - Simply knows what addresses to read and write from
+ * - Virtual memory could just be std::array<T, size> where we know 
+ *   specific regions in memory are for regions RAM, and ROM.
+ * 
+ * 
+ * NOTE:
+ * Reset Vector
+ * - The reset vector is set at memory address locations $0xFFFC and 0xFFFD
+ * 
  * END:
  * 
  * 
 */
+
+
 
 /*
 
@@ -288,6 +284,15 @@ public:
 
     }
 
+    /**
+     * 
+     * 
+     * - Changes thhe state of thhe
+     * 
+    */
+    void turnOnCPU(){
+
+    }
 
     // This is how the CPU configures the instructions, during the boot up phase
     void memoryConfigurations(){}
@@ -296,8 +301,12 @@ public:
     opcode_t read(){
         PC++;
         std::cout << "Program Counter: " << PC << '\n';
-        return memory[PC];
+        // return memory[PC];
+        return 0;
     }
+
+    // Resets the program counter, based on the reset vector.
+    void reset(){}
 
     /**
      * 
@@ -331,7 +340,7 @@ public:
     friend void execute(bool isCpuRunning);
 
     /*
-        resetVector = 0xFFFFC;
+        resetVector = "$0xFFFC to $0xFFFD"
         PC = 0x0000; // 0x0000 to 0xFFFF
         SP = 0xFF; // 0x0100
         AC = 0;
@@ -343,7 +352,11 @@ public:
     Byte A = 0; // accumulator
     Byte X = 0; // index-reg
     Byte Y = 0; // index-reg
-    std::array<u8, 65536> memory; // Ram Memory
-    int resetVector = 0xFFFFC;
+    // Virtual Memory
+    // std::array<uint64_t, 65536> memory; // Acts as the virtual memory.
+    std::array<uint64_t, 0xFFFFD> memory; // Acts as the virtual memory.
+    std::stack<int> callStack; // Virtual Call stack
     std::unordered_map<opcode_t,  std::function<BaseRegister*()> > instructions; // Containing the registers
+    int resetVector = 0xFFFFC;
+    State cpuState; //
 };
