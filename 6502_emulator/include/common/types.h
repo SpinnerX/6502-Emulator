@@ -136,11 +136,11 @@ enum class AddressModes{
 
 // Different states that the CPU will be in.
 enum State{
-    ON, // starting up (booting up the CPU)
-    RESET, // resetting the CPU
+    ON, // starting up (booting up the CPU
+    RESET, // checking the state of the CPU for resetting
     RUNNING, // CPU still running
-    QUIT, // If the CPU has been quit
-    OFF
+    QUIT, // If the CPU has been quit, exexpectedly
+    OFF // If the user decides to turn off the CPU, from running
 };
 
 enum MemoryRegions{
