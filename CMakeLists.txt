@@ -16,52 +16,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(PROJECT_INCLUDE_DIR 6502_emulator)
 
 
-# find_package(formatCpp REQUIRED)
-
-
-# Apply to single targets
-# if (CMAKE_COMPILER_IS_GNUCC)
-#     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-deprecated-non-prototype)
-# endif()
-
-# if(MSVC)
-#     target_compile_options(${PROJECT_NAME} /W4)
-# endif()
-
-# This is applying to all targets
-# These are package maintainers that will let you know what is happening
-# Ref Link for these compiler flags: https://stackoverflow.com/questions/14231292/cmake-and-compiler-warnings
-# if(CMAKE_COMPILER_IS_GNUCC)
-#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -wnoi-deprecated-non-prototype")
-# endif()
-
-
-# if(MSVC)
-#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-deprecated-non-prototype")
-# endif()
-
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/include
-    # Uncomment these if you want to directly includes the directories themselves
-    # Example: instead of doing: #include "common/Utils.h" you would just be doing "Utils.h"
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/include/common
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/include/core
 )
-
-# aux_source_directory(${PROJECT_SOURCE_DIR}/ProjectCmake/src all_src)
 
 # Better way instead of GLOBBING 
 set(
     all_src
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/peripherals/RomMemory.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/peripherals/RamMemory.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/common/Instruction.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/common/CPUState.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/common/Memory.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/core/6502-Emulator.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/common/CPUConfigs.cpp
-    # ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/core/CPU.cpp
     ${PROJECT_SOURCE_DIR}/${PROJECT_INCLUDE_DIR}/src/main.cpp
 )
 
@@ -90,9 +52,4 @@ add_test(
     COMMAND tests -C $<CONFIGURATION>
 )
 
-# Cmake modules here
-# include(${PROJECT_SOURCE_DIR}/cmake/glfw.cmake)
-# target_link_libraries(
-#     ${PROJECT_NAME}
-#     formatCpp
-# )
+include(${PROJECT_SOURCE_DIR}/cmake/glfw.cmake)
