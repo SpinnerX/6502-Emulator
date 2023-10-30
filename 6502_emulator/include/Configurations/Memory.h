@@ -13,38 +13,90 @@
  * - Since we know RAM is random access memory allows to read and write
  * - And ROM allows to only read in memory.
  * 
+ * 1.) RAM (Random Access Memory)
+ * - Volatile memory, means when data is lost when the CPU is turned off.
+ * 
+ * 2.) ROM (Read Only Memory)
+ * - Generally holds firmware or permanent code that cannot be modified during runtime
+ * 
+ * 
+ * NOTE:
+ * - 6502 CPU supports up to 64kb of memory.
+ * - Which is the size of RAM, and ROM memory array.
+ * 
+ * 
+ * 
+ * NOTE:
+ * 
 */
 
-template<MemoryRegions region>
-class Memory;
+/**
+ * 
+ * 
+ *  ----[Memory Visualization]---
+    +---------------------------+
+    |                           |
+    |          RAM              |
+    |                           |
+    |      (0x0000 - 0x1FFF)    |
+    |                           |
+    +---------------------------+
+    |                           |
+    |      Mirrors of RAM       |
+    |                           |
+    |  (0x2000 - 0x3FFF)        |
+    |                           |
+    +---------------------------+
+    |                           |
+    |      I/O Registers        |
+    |                           |
+    |  (0x4000 - 0x5FFF)        |
+    |                           |
+    +---------------------------+
+    |                           |
+    |         Expansion         |
+    |                           |
+    |  (0x6000 - 0x7FFF)        |
+    |                           |
+    +---------------------------+
+    |                           |
+    |           ROM             |
+    |                           |
+    |  (0x8000 - 0xFFFF)        |
+    |                           |
+    +---------------------------+
+    |                           |
+    |       Reset Vector        |
+    |      (0xFFFC - 0xFFFD)    |
+    |                           |
+    +---------------------------+
+ * 
+*/
 
-template<>
-class Memory<MemoryRegions::RandomAccessMemory>{
+/**
+ * 
+ * 
+ * Memory is memory
+ * - When we have different regions of memory means that we are not having seperate arrays
+ * - They are contained into one array of memory, with just specific ranges in that array allocated only specific regions.
+ * 
+*/
+
+class Memory{
 public:
-    Memory<MemoryRegions::RandomAccessMemory>() = default;
-    
-    // read memory
-    uint16_t read(uint16_t address){
-        return memory[address];
-    }
+   // allocating and initialize memory
+   void allocate(){}
 
-    // write memory
-    void write(uint16_t address, uint16_t value){
-        memory[address] = value;
-    }
+   // reading to memory
+   void read(uint64_t address){}
 
-    std::array<uint16_t, 65536> memory;
-};
+   // writing to memory
+   void write(uint64_t address, uint64_t value){}
 
-template<>
-class Memory<MemoryRegions::ReadOnlyMemory>{
-public:
-    Memory<MemoryRegions::ReadOnlyMemory>() = default;
-    
-    // read memory
-    uint16_t read(uint16_t address){
-        return memory[address];
-    }
-
-    std::array<uint16_t, 65536> memory;
+   // accessing memory through the operator[]
+   uint64_t operator[](std::size_t index){
+      return memory[index];
+   }
+private:
+   std::array<uint64_t, 65536> memory;
 };
