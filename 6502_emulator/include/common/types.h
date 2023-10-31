@@ -35,7 +35,7 @@ using hex_t = unsigned char;
  * 
 */
 
-enum class RegisterTypes{
+enum class OperationTypes{
     // Main core instructions reserved for the CPU
     PC, // program counter (16 bits)
     SP, // stack pointer (8 bits)
