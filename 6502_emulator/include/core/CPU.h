@@ -4,7 +4,7 @@
 #include <functional>
 #include <stack>
 #include <common/types.h>
-#include <Registers/MnemonicOperation.h>
+#include <cpu/MnemonicOperation.h>
 #include <Configurations/Memory.h>
 
 /**
