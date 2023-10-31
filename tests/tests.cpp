@@ -1,5 +1,5 @@
 #include <iostream>
-#include "InitializedRegistersTest.h"
+#include "InitializedOpcodesTest.h"
 
 /**
  * 
