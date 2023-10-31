@@ -4,7 +4,7 @@
 #include <functional>
 #include <stack>
 #include <common/types.h>
-#include <Registers/Operation.h>
+#include <Registers/MnemonicOperation.h>
 #include <Configurations/Memory.h>
 
 /**
@@ -326,10 +326,6 @@ public:
         // We want to check if the register is in the lookup table
         // Knowing if its not in the lookup then no need to continue, and throw an assert.
         if(!instructions.contains(opcode)){
-            // std::cout << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
-            // std::stringstream ss;
-            // ss << "ERROR OCCURED: INVALID OPCODE \"" << reinterpret_cast<void *>(opcode) << "\"\n";
-            // assert((void("Invalid opcode does not exist in registers lookup table!"), instructions.contains(opcode))); //???
             return nullptr;
         }
 
