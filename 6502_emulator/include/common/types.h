@@ -1,149 +1,53 @@
 #pragma once
-#include <cstdint>
-#include <type_traits>
-
-// Aliasing types
-// 1 byte = 8 bits
-// 2 bytes = 16 bits
-using Byte = uint8_t;
-using Bytes2 = uint16_t;
-using u8 = uint8_t;
-using u16 = uint16_t;
-using opcode_t = uint8_t;
-
-using hex_t = unsigned char;
-
+#include <iomanip>
+#include <cmath>
+#include <unordered_map>
+#include <functional>
 
 /**
  * 
- * Containing types that'll be recognize and used in this emulator.
- * 
- * External @note
- * 
- * This instruction struct is not to contain any functions
- * - Struct is to represent the different instructions we are executing
- * - Containing information about those executed instructions, included cycles, opcodes, address modes, etc.
- * 
- * 
- * START: @note
- * 
- * - Only the Instructions class shhould know what type this instruction
- * - Such as what kind 
- * 
- * END: @note
- * 
+ * InstructionData
+ * - Contains instruction name, address mode, and opcode
+ * - Opcode will help us know if there is a need for additional cycles (since it varies by opcode for each address mode)
+ * - Handles in checking if there needs to be additional cycles based on the address mode
  * 
 */
 
-enum class OperationTypes{
-    // Main core instructions reserved for the CPU
-    PC, // program counter (16 bits)
-    SP, // stack pointer (8 bits)
-    AC, // Accumulator (8 bits)
-    X, // index register (8 bits)
-    Y, // index register (8 bits)
+struct InstructionData{
+    // returns a value if there is an additional cycles to be computed
+    // or returns 0 if no additional cycles depending on address mode
+    uint8_t cycle(CPUConfigs& configs){
+        return 0;
+    }
 
-    // below here are status flags
-    // Deciding on whether these may be needed
-    C,
-    Z,
-    I,
-    D,
-    V,
-    N,
-
-    // Instructions names used by the assembler
-    ADC, // ....    add with carry
-    AND, // ....    And (with accumulator)
-    ASL, // ....    Arithmetic Shift Left
-    BCC, // ....    branch on carry clear
-    BCS, // ....    branch on carry set
-    BEQ, // ....    branchh on equal (zero set)
-    BIT, // ....    bit test
-    BMI, // ....    branch on minus (negative set)
-    BNE, // ....    branch on not equal (zero clear)
-    BPL, // ....    branch on plus (negative clear)
-    BRK, // ....    break / interrupt
-    BVC, // ....    branch on overflow clear
-    BVS, // ....    branchh on overflow set
-    CLC, // ....    clear carry
-    CLD, // ....    clear decimal
-    CLI, // ....    clear interrupt disable
-    CLV, // ....    clear overflow
-    CMP, // ....    compare (with accumulator)
-    CPX, // ....    compare with X
-    CPY, // ....    compare with Y
-    DEC, // ....    decrement
-    DEX, // ....    decrement with X
-    DEY, // ....    decrement with Y
-    EOR, // ....    exclusive OR (with accumulator)
-    INC, // ....    increment
-    INX, // ....    increment X
-    INY, // ....    increment Y
-    JMP, // ....    jump
-    JSR, // ....    jump subroutine
-    LDA, // ....    load accumulator
-    LDX, // ....    load X
-    LDY, // ....    load Y
-    LSR, // ....    logical shift right
-    NOP, // ....    no operation
-    ORA, // ....    or withh accumulator
-    PHA, // ....    push accumualator
-    PHP, // ....    push process status (SR)
-    PLA, // ....    pull accumulator
-    PLP, // ....    pull processor status (SR)
-    ROL, // ....    rotate left
-    ROR, // ....    rotate right
-    RTI, // ....    return from interrupt
-    RTS, // ....    return from subroutine
-    SBC, // ....    subtract with carry
-    SEC, // ....    set carry
-    SED, // ....    set decimal
-    SEI, // ....    set interrupt disable
-    STA, // ....    store accumulator
-    STX, // ....    store X
-    STY, // ....    store Y
-    TAX, // ....    transfer accumulator to X
-    TAY, // ....    transfer accumulator to Y
-    TSX, // ....    transfer stack  pointer to X
-    TXA, // ....    transfer X to accumulator
-    TXS, // ....    transfer X to stack pointer
-    TYA, // ....    transfer Y to accumulator
-    DEFAULT = -1 // .... default value
+    std::string name = "Default Name";
+    std::string addressMode = "Default mode";
+    uint16_t opcode = 0x00;
 };
 
-/**
- * 
- * Check Address Modes in this link: https://www.masswerk.at/6502/6502_instruction_set.html
- * 
-*/
-enum class AddressModes{
-    A,                  // Accumulator address mode
-    ABS,                // Absolute
-    ABSX,               // Absolute, X => Absolute, X-indexed
-    ABSY,               // Absolute, Y => Absolute, Y-indexed
-    IMMEDIATE,          // means immediate
-    IMPLIED,               // implied
-    INDIRECT,                // indirect
-    INDIRECT_X,         // x-indexed, indirect
-    INDIRECT_Y,         // indirect, y-indexed
-    RELATIVE,                // Relative
-    ZPG,                // zeropage
-    ZPG_X,              // Zeropage, X-indexed
-    ZPG_Y,              // Zeropage, Y-indexed
-    NOT_FOUND,          // Indicating Address is not found.
-};
 
-// Different states that the CPU will be in.
-enum State{
-    ON, // starting up (booting up the CPU
-    RESET, // checking the state of the CPU for resetting
-    RUNNING, // CPU still running
-    QUIT, // If the CPU has been quit, exexpectedly
-    OFF // If the user decides to turn off the CPU, from running
-};
+// Adding Instruction Data to hashh table to allow a lookup table for the instruction set.
+InstructionData instructionData(uint16_t opcode){
+    std::unordered_map<uint16_t, InstructionData> instructions; // unordered_map<opcode, name>
 
-enum MemoryRegions{
-    RandomAccessMemory,
-    ReadOnlyMemory
-};
+
+    // LDA Instruction
+    instructions.emplace(0xA9, InstructionData{"LDA", "IMM", 0xA9}); // IMMEDIATE
+    instructions.emplace(0xA5, InstructionData{"LDA", "ZPG", 0xA5}); // ZeroPage
+    instructions.emplace(0xB5, InstructionData{"LDA", "ZPGX", 0xB5}); // ZeroPage X
+    instructions.emplace(0xAD, InstructionData{"LDA", "ABS", 0xAD}); // Absolute
+    instructions.emplace(0xBD, InstructionData{"LDA", "ABSX", 0xBD}); // Absolute X
+    instructions.emplace(0xB9, InstructionData{"LDA", "ABSY", 0xB9}); // Absolute Y
+    instructions.emplace(0xA1, InstructionData{"LDA", "IND_X", 0xA1}); // (Indirect, X)
+    instructions.emplace(0xB1, InstructionData{"LDA", "IND_Y", 0xB1}); // (Indirect), Y
+
+
+    // LDX Instruction
+    instructions.emplace(0xA2, InstructionData{"LDX", "IMM", 0xA2}); // IMMEDIATER
+    instructions.emplace(0xA6, InstructionData{"LDX", "ZPG", 0xA6}); // ZeroPage
+    instructions.emplace(0xB6, InstructionData{"LDX", "ZPGY", 0xB6}); // ZeroPage Y
+    instructions.emplace(0xAE, InstructionData{"LDX", "ABS", 0xAE}); // Absolute
+    instructions.emplace(0xBE, InstructionData{"LDX", "ABSY", 0xBE}); // Absolute Y
+
+    return instructions[opcode];
+}
