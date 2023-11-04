@@ -1,5 +1,4 @@
-## CPU Process
-
+# 6502 8-bit CPU Processor
 
 # Fetch, Decode, Execute Cycle
 ## Fetch
