@@ -30,7 +30,15 @@ until otherwise.
 2. Using this struct to basically pass objects around the CPU
 3. Reusing the variables across the CPU, storing and loading data
 4. Data that are being passed, and resetted depending on the instruction.
+5. Also contains the status flags that are used for the instructions
+6. This is so I can know how to call these status flags when, we need to modify those bitfields.
 
+`InstructionData`
+1. Struct InstructionData is basically containing the opcodes, name of instruction, and address mode
+2. This way of having a way to organize our data flow
+3. Having a system for sending data throughout the CPU
+4. Since these are common things for each instruction to have, we will have a few ways of retrieiving different information using InstructionData.
+5. InstructionData also makes it convenient to have our data for these instructions and how they can be stored.
 
 `InstructionSet.h`
 1. Contains BaseInstruction allowing C++ to know Instruction that is a template to be a type
@@ -40,3 +48,10 @@ until otherwise.
 5. Since opcodes are notedly how we know which instruction and address mode are based on the opcode we pass.
 6. Templated class allows for a more generic way of having one generic thing that can basically do what it needs to do.
 
+`CPU.h`
+1. run() - is the function call to simply start running the CPU.
+2. fetch() - returns the data we are reading from memory (essentially just fetches data in memory)
+3. decode() - returns BaseInstruction pointer that searches using thhe opcodes we extract from fetching process
+4. executeInstruction(BaseInstruction*) - is what executes our instructions after the fetching and decoding phase
+5.  Once the loop finishes we reset the information back to a known state.
+NOTE: Another thing to consider, is hhaving a way for the CPU to know when the go into a quitting state, or knowing when to go to specific states.
