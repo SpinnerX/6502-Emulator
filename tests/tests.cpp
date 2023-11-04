@@ -1,22 +1,8 @@
 #include <iostream>
-#include "InitializedOpcodesTest.h"
+#include "instructionInitializedTest.h"
+using namespace std;
 
-/**
- * 
- * Overview of Unit Test Cases
- * 
- * 1.) InitializedRegistersTest.h
- * - Simply tests if registers information are set correctly
- * - Check header, for more information
- * 2.) ???
- * 
- * 
- * 
-*/
-
-
-int main() {
-    CPU cpu;
-
-    runRegistersInitializedTestsInit(cpu);
+int main(){
+    CPUConfigs configs;
+    testLDAInstruction(configs);
 }
