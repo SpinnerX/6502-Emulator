@@ -31,7 +31,7 @@ InstructionData instructionData(uint16_t opcode){
     std::unordered_map<uint16_t, InstructionData> instructions; // unordered_map<opcode, name>
 
 
-    // LDA Instruction
+    // LDA Instruction (Loading accumulator)
     instructions.emplace(0xA9, InstructionData{"LDA", "IMM", 0xA9}); // IMMEDIATE
     instructions.emplace(0xA5, InstructionData{"LDA", "ZPG", 0xA5}); // ZeroPage
     instructions.emplace(0xB5, InstructionData{"LDA", "ZPGX", 0xB5}); // ZeroPage X
@@ -42,12 +42,19 @@ InstructionData instructionData(uint16_t opcode){
     instructions.emplace(0xB1, InstructionData{"LDA", "IND_Y", 0xB1}); // (Indirect), Y
 
 
-    // LDX Instruction
-    instructions.emplace(0xA2, InstructionData{"LDX", "IMM", 0xA2}); // IMMEDIATER
+    // LDX Instruction (Loading x register)
+    instructions.emplace(0xA2, InstructionData{"LDX", "IMM", 0xA2}); // IMMEDIATE
     instructions.emplace(0xA6, InstructionData{"LDX", "ZPG", 0xA6}); // ZeroPage
     instructions.emplace(0xB6, InstructionData{"LDX", "ZPGY", 0xB6}); // ZeroPage Y
     instructions.emplace(0xAE, InstructionData{"LDX", "ABS", 0xAE}); // Absolute
     instructions.emplace(0xBE, InstructionData{"LDX", "ABSY", 0xBE}); // Absolute Y
+
+    // LDY Instruction (Loading y register)
+    instructions.emplace(0xA0, InstructionData{"LDY", "IMM", 0xA0}); // IMMEDIATE
+    instructions.emplace(0xA4, InstructionData{"LDY", "ZPG", 0xA4}); // ZeroPage
+    instructions.emplace(0xB4, InstructionData{"LDY", "ZPGX", 0xB4}); // ZeroPage X
+    instructions.emplace(0xAC, InstructionData{"LDY", "ABS", 0xAC}); // Absolute
+    instructions.emplace(0xBC, InstructionData{"LDY", "ABSX", 0xBC}); // Absolute X
 
     return instructions[opcode];
 }
