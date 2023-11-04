@@ -65,9 +65,10 @@ public:
         }
 
         int value = 2;
-        print("IMM (Immediate) mode called\n");
         instruction->operation(conf, value);
         printHex(conf.ac);
+
+        reset();
         // if(instruction->addressMode == "IMM" and instruction->name == "LDA"){
         //     print("IMM (Immediate) mode called\n");
         //     instruction->operation(conf, value);
