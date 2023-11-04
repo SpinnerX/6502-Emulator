@@ -1,7 +1,9 @@
 #include <iostream>
-#include <core/6502.h>
+#include <cpu/CPU.h>
+using namespace std;
+
 
 int main(){
-    execute(true);
-    return 0;
+    CPU cpu;
+    cpu.run();
 }
