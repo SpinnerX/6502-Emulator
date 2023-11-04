@@ -32,8 +32,8 @@ struct BaseInstruction{
         // +	+	-	-	-	-
         operations.emplace("LDA", [&](CPUConfigs& configs, uint8_t data){
             configs.ac = data;
-            setFlag(CPUConfigs::Status::Z, configs.ac == 0x00);
-            setFlag(CPUConfigs::Status::N, configs.ac & 0x80);
+            setFlag(configs.status, CPUConfigs::Status::Z, configs.ac == 0x00);
+            setFlag(configs.status, CPUConfigs::Status::N, configs.ac & 0x80);
         });
 
         // // Function: M -> X (Putting data into the x register)
@@ -60,11 +60,16 @@ struct BaseInstruction{
         return 0x00;
     }
 
-    virtual void getFlag(CPUConfigs::Status flag, bool condition){
+    // Returns value of specific bit of status reg
+    // takes the original variable (that we want to modify, until I can find a better way of doing it later...)
+    // for both setFlag and getFlag functions
+    virtual uint8_t getFlag(uint8_t& s, CPUConfigs::Status flag){
         printf("Default getFlag() function!\n");
+        return 0;
     }
 
-    virtual void setFlag(CPUConfigs::Status flag, bool condition){
+    // Sets or clears a specific bit of the status register
+    virtual void setFlag(uint8_t& s, CPUConfigs::Status flag, bool condition){
         printf("Default setFlag() function!\n");
     }
 
@@ -99,6 +104,26 @@ struct Instruction : public BaseInstruction {
 
     uint8_t cycle(CPUConfigs& configs) override {
         return instructionData(Opcode).cycle(configs);
+    }
+
+    // For now this is how we will set the statuses
+    // using setFlag and getFlag the way they're implemented for rn
+    // We pass in the status we want to modify
+
+    // Either returning a specific bit for the status register
+    uint8_t getFlag(uint8_t& status, CPUConfigs::Status flag) override {
+        return ((status & flag) > 0) ? 1 : 0;
+    }
+
+    // Passing status to modify whether we will actually modify the value
+    // To either setting that bit, or clearing that bit.
+    void setFlag(uint8_t& status, CPUConfigs::Status flag, bool condition) override{
+        if(condition){
+            status |= flag;
+        }
+        else{
+            status &= ~flag;
+        }
     }
 
 };
