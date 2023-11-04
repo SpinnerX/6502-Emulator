@@ -18,7 +18,7 @@ void testLDAInstruction(CPUConfigs& conf){
     testInstruction2->operation(conf, 2); // testing that we are loading 2 into register x, essentially doing: LDX $2
 
     BaseInstruction* testInstruction3 = new Instruction<0xA0>();
-    testInstruction3->operation(conf, 5); // testing that we are loading 2 into register x, essentially doing: LDX $2
+    testInstruction3->operation(conf, 5); // testing that we are loading 2 into register y, essentially doing: LDY $5
 
     "LDAInitialized Address Modes"_test = [&]{
         expect(that % conf.ac == 0x02);
