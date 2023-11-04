@@ -55,3 +55,13 @@ until otherwise.
 4. executeInstruction(BaseInstruction*) - is what executes our instructions after the fetching and decoding phase
 5.  Once the loop finishes we reset the information back to a known state.
 NOTE: Another thing to consider, is hhaving a way for the CPU to know when the go into a quitting state, or knowing when to go to specific states.
+
+
+
+
+
+## Resourceful Links
+`https://en.wikipedia.org/wiki/MOS_Technology_6502` - Context more about the 6502 processor.
+`https://www.masswerk.at/6502/6502_instruction_set.html#LDA` - 6502 Instruction sets for reference
+`https://www.nesdev.org/wiki/CPU_addressing_modes` - Address modes
+`http://archive.6502.org/datasheets/rockwell_r650x_r651x.pdf` - Another datasheet for thhe 6502 processor
