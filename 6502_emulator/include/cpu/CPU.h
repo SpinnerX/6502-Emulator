@@ -29,9 +29,6 @@ public:
         lookup.insert({0xA9, new Instruction<0xA9>()});
     }
 
-    // connect the communication between the cpu -> to the -> bus
-    // void connect(Bus* other){ bus = other; }
-
     void run(){
         std::cout << "CPU Running...\n";
         int start = conf.pc;
@@ -44,14 +41,6 @@ public:
             sleep(1);
         }
     }
-
-    void runTest(){
-        uint16_t opcode = 0xA9;
-        lookup[opcode]->operation(conf, 42);
-
-        printHex(conf.ac);
-    }
-
 
     // adding out fetch, decode, and execute phases
 
@@ -76,16 +65,18 @@ public:
         }
 
         int value = 2;
+        print("IMM (Immediate) mode called\n");
+        instruction->operation(conf, value);
+        printHex(conf.ac);
+        // if(instruction->addressMode == "IMM" and instruction->name == "LDA"){
+        //     print("IMM (Immediate) mode called\n");
+        //     instruction->operation(conf, value);
+        //     setFlag(CPUConfigs::Status::Z, conf.ac == 0x00);
+        //     setFlag(CPUConfigs::Status::N, conf.ac & 0x80);
+        //     printHex(conf.ac);
 
-        if(instruction->addressMode == "IMM" and instruction->name == "LDA"){
-            print("IMM (Immediate) mode called\n");
-            instruction->operation(conf, value);
-            setFlag(CPUConfigs::Status::Z, conf.ac == 0x00);
-            setFlag(CPUConfigs::Status::N, conf.ac & 0x80);
-            printHex(conf.ac);
-
-            reset();
-        }
+        //     reset();
+        // }
 
 
 
@@ -94,23 +85,6 @@ public:
     // We make sure that the CPU is in a known state
     void reset(){
         conf.reset();
-    }
-
-private:
-    // Returns value of specific bit of status reg
-    void setFlag(CPUConfigs::Status flag, bool condition){
-        if(condition){
-            conf.status |= flag;
-        }
-        else{
-            conf.status &= ~flag;
-        }
-    }
-
-
-    // Sets or clears a specific bit of the status register
-    uint8_t getFlag(CPUConfigs::Status status){
-        return ((conf.status & status) > 0) ? 1 : 0;
     }
 
 private:
