@@ -56,5 +56,45 @@ InstructionData instructionData(uint16_t opcode){
     instructions.emplace(0xAC, InstructionData{"LDY", "ABS", 0xAC}); // Absolute
     instructions.emplace(0xBC, InstructionData{"LDY", "ABSX", 0xBC}); // Absolute X
 
+    // STA (Store Accumulator in Memory)
+    instructions.emplace(0x85, InstructionData{"STA", "ZPG", 0x85}); // ZeroPage
+    instructions.emplace(0x95, InstructionData{"STA", "ZPGX", 0x95}); // ZeroPage X
+    instructions.emplace(0x8D, InstructionData{"STA", "ABS", 0x8D}); // Absolute
+    instructions.emplace(0x9D, InstructionData{"STA", "ABSX", 0x9D}); // Absolute X
+    instructions.emplace(0x99, InstructionData{"STA", "ABSY", 0x99}); // Absolute Y
+    instructions.emplace(0x81, InstructionData{"STA", "IND_X", 0x81}); // (Indirect, X)
+    instructions.emplace(0x91, InstructionData{"STA", "IND_Y", 0x91}); // (Indirect), Y
+
+    // STX (Store X in Memory)
+    instructions.emplace(0x86, InstructionData{"STX", "ZPG", 0x86}); // ZeroPage
+    instructions.emplace(0x96, InstructionData{"STX", "ZPGY", 0x96}); // ZeroPage Y
+    instructions.emplace(0x8E, InstructionData{"STX", "ABS", 0x8E}); // Absolute
+
+    // STY (Store Y in Memory)
+    instructions.emplace(0x84, InstructionData{"STY", "ZPG", 0X84}); // ZeroPage
+    instructions.emplace(0x94, InstructionData{"STY", "ZPGX", 0X94}); // ZeroPage X
+    instructions.emplace(0x8C, InstructionData{"STY", "ABS", 0X8C}); // Absolute
+
+    // TAX (Transfer Accumulator to Index X)
+    // instructions.emplace(0xAA, InstructionData{"TAX", "IMPLIED", 0xAA});
+
+    // // TAY (Transfer Accumulator to Index Y)
+    // instructions.emplace(0xA8, InstructionData{"TAY", "IMLPIED", 0xA8});
+
+    // // TSX (Transfer Stack Pointer to Index X)
+    // instructions.emplace(0xBA, InstructionData{"TSX", "IMPLIED", 0xBA});
+
+    // // TXA (Transfer Index X to Accumulator)
+    // instructions.emplace(0x8A, InstructionData{"TXA", "IMPLIED"}, 0x8A);
+
+    // // TXS (Transfer Index X to Stack Register)
+    // instructions.emplace(0x9A, InstructionData{"TXS", "IMPLIED", 0x9A});
+
+    // // TYA (Transfer Index Y to Accumulator)
+    // instructions.emplace(0x98, InstructionData{"TYA", "IMPLIED", 0x98});
+
+    
+
+
     return instructions[opcode];
 }
