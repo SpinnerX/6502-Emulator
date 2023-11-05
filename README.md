@@ -59,6 +59,19 @@ NOTE: Another thing to consider, is hhaving a way for the CPU to know when the g
 
 
 
+### TODO
+NOTE - Regarding ALU is to figure how this should work, once verified that thhe instructions can first \
+      load, store, and is able to transfer data from one register to another, stack memory location to \
+       a register, etc.
+
+1. Implementing ALU (Airthmetic Logical unit)
+    1.1. Need to implement to handle arithmetic operations
+        - Addition, Subtraction
+    1.2. Handling logic operations (branch, jmps, etc)
+        - Increment, Decrement, AND, OR, Exclusive-OR operations (bitwise OR)
+
+
+
 
 ## Resourceful Links
 `https://en.wikipedia.org/wiki/MOS_Technology_6502` - Context more about the 6502 processor.
