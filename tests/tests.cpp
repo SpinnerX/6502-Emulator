@@ -4,5 +4,6 @@ using namespace std;
 
 int main(){
     CPUConfigs configs;
-    testLDAInstruction(configs);
+    testLoadInstructions(configs);
+    testStoringInstructions(configs);
 }
