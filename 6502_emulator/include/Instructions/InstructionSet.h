@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <algorithm>
+#include <any>
+#include <variant>
 #include <common/CPUConfigs.h>
 #include <common/types.h>
 
@@ -13,6 +15,8 @@
 // Handling if depending on the instructions if there are any additional cycles 
 
 struct BaseInstruction{
+    template<typename T>
+    using um_map = std::unordered_map<std::string, std::function<void(T&, uint8_t)> >;
     BaseInstruction() = default;
     BaseInstruction(std::string n, std::string mode, uint16_t cyc) : name(n), addressMode(mode), cycles(cyc) {}
     BaseInstruction(uint16_t op){
@@ -42,11 +46,28 @@ struct BaseInstruction{
             configs.x = data;
         });
 
+        // Function: M -> Y (Storing data into y register)
         operations.emplace("LDY", [&](CPUConfigs& configs, uint8_t data){
             configs.y = data;
         });
 
+        // Function: A -> M
+        operations.emplace("STA", [&](CPUConfigs& configs, uint8_t data){
+            configs.ac = data;
+            configs[this->opcode] = configs.ac;
+        });
 
+        operations.emplace("STX", [&](CPUConfigs& configs, uint8_t data){
+            configs.x = data;
+            configs[this->opcode] = configs.x;
+        });
+
+        operations.emplace("STY", [&](CPUConfigs& configs, uint8_t data){
+            configs.y = data;
+            configs[this->opcode] = configs.x;
+        });
+
+        
     }
 
 
@@ -85,6 +106,8 @@ struct BaseInstruction{
     std::string addressMode = "Default Address Mode";
     uint16_t opcode=0;
     uint16_t cycles=0;
+
+    // template<class T>
     std::unordered_map<std::string, std::function<void(CPUConfigs&, uint8_t)> > operations; // unordered_map<instructionName, operation>
 };
 
