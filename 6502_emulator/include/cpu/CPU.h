@@ -21,11 +21,7 @@ void printHex(uint16_t value){
 class CPU{
 public:
     CPU(){
-        memory.fill(0);
-        memory[0x03] = 0xA9;
-        memory[0xFFFC] = 0x0000;
-        memory[0xFFFC] = 0x0001;
-
+        conf.initializeMemory();
         lookup.insert({0xA9, new Instruction<0xA9>()});
     }
 
@@ -46,7 +42,8 @@ public:
 
     // Fetching grabs the next instruction and thhe program counter contains that specific location (basically memory[pc++])
     uint8_t fetch(){
-        uint8_t data = memory[conf.pc++];
+        // uint8_t data = conf.memory[conf.pc++];
+        uint8_t data = conf[conf.pc++];
         return data;
     }
 
@@ -79,8 +76,6 @@ public:
         //     reset();
         // }
 
-
-
     }
 
     // We make sure that the CPU is in a known state
@@ -89,9 +84,8 @@ public:
     }
 
 private:
-    // CPUConfigs contains our register
+    // CPUD contains our register
     CPUConfigs conf;
-    std::array<uint8_t, 64 * 1024> memory; // virtual memory
     std::unordered_map<uint16_t, BaseInstruction *> lookup; // lookup table for searching 
     BaseInstruction* instruction; // This will store the current instruction that we will want to execute
 };
