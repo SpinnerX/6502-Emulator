@@ -33,6 +33,13 @@ struct CPUConfigs{
 		N = (1 << 7),	// Negative
 	};
 
+    void initializeMemory(){
+        memory.fill(0);
+        memory[0x03] = 0xA9;
+        memory[0xFFFC] = 0x0000;
+        memory[0xFFFC] = 0x0001;
+    }
+
     // resetting these registers to a known state
     void reset(){
         pc = 0x00;
@@ -43,6 +50,14 @@ struct CPUConfigs{
         ir = 0x00;
     }
 
+    // uint8_t operator[](uint64_t index) {
+    //     return memory[index];
+    // }
+
+    uint8_t& operator[](uint64_t index) {
+        return memory[index];
+    }
+
     uint16_t pc = 0x00; // program counter
     uint8_t sp = 0x00; // stack pointer
     uint8_t x = 0x00; // x indexed register
@@ -50,4 +65,5 @@ struct CPUConfigs{
     uint8_t ac = 0x00; // accumulator
     uint8_t ir = 0x00; // instruction register. Used during the fetch process. Containing the instruction we are gonna use for decoding
     uint8_t status; // Containing current statuses
+    std::array<uint8_t, 1024 * 64> memory; // contains virtual memory data 
 };
