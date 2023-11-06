@@ -76,24 +76,34 @@ InstructionData instructionData(uint16_t opcode){
     instructions.emplace(0x8C, InstructionData{"STY", "ABS", 0X8C}); // Absolute
 
     // TAX (Transfer Accumulator to Index X)
-    // instructions.emplace(0xAA, InstructionData{"TAX", "IMPLIED", 0xAA});
+    instructions.emplace(0xAA, InstructionData{"TAX", "IMPLIED", 0xAA});
 
     // // TAY (Transfer Accumulator to Index Y)
-    // instructions.emplace(0xA8, InstructionData{"TAY", "IMLPIED", 0xA8});
+    instructions.emplace(0xA8, InstructionData{"TAY", "IMLPIED", 0xA8});
 
     // // TSX (Transfer Stack Pointer to Index X)
-    // instructions.emplace(0xBA, InstructionData{"TSX", "IMPLIED", 0xBA});
+    instructions.emplace(0xBA, InstructionData{"TSX", "IMPLIED", 0xBA});
 
     // // TXA (Transfer Index X to Accumulator)
-    // instructions.emplace(0x8A, InstructionData{"TXA", "IMPLIED"}, 0x8A);
+    instructions.emplace(0x8A, InstructionData{"TXA", "IMPLIED", 0x8A});
 
     // // TXS (Transfer Index X to Stack Register)
-    // instructions.emplace(0x9A, InstructionData{"TXS", "IMPLIED", 0x9A});
+    instructions.emplace(0x9A, InstructionData{"TXS", "IMPLIED", 0x9A});
 
-    // // TYA (Transfer Index Y to Accumulator)
-    // instructions.emplace(0x98, InstructionData{"TYA", "IMPLIED", 0x98});
+    // TYA (Transfer Index Y to Accumulator)
+    instructions.emplace(0x98, InstructionData{"TYA", "IMPLIED", 0x98});
 
+
+    // Stack Instructions
     
+    // PHA (Push accumulator on Stack)
+    instructions.emplace(0x48, InstructionData{"PHA", "IMPLIED", 0x48});
+
+    // PHP (Push Processor Status on Stack)
+    instructions.emplace(0x08, InstructionData{"PHP", "IMPLIED", 0x08});
+
+    // PLA (Pull Accumulator from Stack)
+    instructions.emplace(0x68, InstructionData{"PLA", "IMPLIED", 0x68});
 
 
     return instructions[opcode];

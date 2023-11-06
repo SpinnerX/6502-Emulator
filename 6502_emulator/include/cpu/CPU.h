@@ -22,20 +22,22 @@ class CPU{
 public:
     CPU(){
         conf.initializeMemory();
+        conf.reset();
         lookup.insert({0xA9, new Instruction<0xA9>()});
     }
 
     void run(){
         std::cout << "CPU Running...\n";
         int start = conf.pc;
-
         while(start < lookup.size()){
             uint16_t opcode = fetch();
             BaseInstruction* instruction = decode(opcode);
 
-            executeInstruction(instruction);
+            // executeInstruction(instruction);
+            printSP(); // debugging
             sleep(1);
         }
+        std::cout << "CPU Stopping...\n";
     }
 
     // adding out fetch, decode, and execute phases
@@ -65,22 +67,18 @@ public:
         instruction->operation(conf, value);
         printHex(conf.ac);
 
-        reset();
-        // if(instruction->addressMode == "IMM" and instruction->name == "LDA"){
-        //     print("IMM (Immediate) mode called\n");
-        //     instruction->operation(conf, value);
-        //     setFlag(CPUConfigs::Status::Z, conf.ac == 0x00);
-        //     setFlag(CPUConfigs::Status::N, conf.ac & 0x80);
-        //     printHex(conf.ac);
-
-        //     reset();
-        // }
-
     }
 
     // We make sure that the CPU is in a known state
     void reset(){
         conf.reset();
+    }
+private:
+    void printSP(){
+        print("Stack Pointer: ");
+        printHex(0x0100 + conf.sp);
+        conf.sp--;
+        print("\n");
     }
 
 private:
