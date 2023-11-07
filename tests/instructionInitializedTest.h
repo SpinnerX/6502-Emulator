@@ -135,12 +135,10 @@ void testStackInstructions(CPUConfigs& conf){
     };
 
     BaseInstruction* php = new Instruction<0x08>(); // PLA (Pull Accumulator to Stack)
-    php->operation(conf, (conf.status | CPUConfigs::Status::B | CPUConfigs::Status::U));
-    
-
-
+    php->operation(conf, (conf.status | CPUConfigs::Status::B));
 
     "PHPStackInstructionInitialized Address Modes"_test = [&]{
+        
         // expect(that % 1 == (conf.status >> 5) & 1); // checking 5th bit has been set to 1.
     };
 }

@@ -115,13 +115,16 @@ struct BaseInstruction{
         operations.emplace("PHP", [&](CPUConfigs& configs, uint8_t data){
             // PHP (Push Procssor Status on Stack)
             // Function: push SR // SR is referring to Status flags
+            // NOTE: Pushes processor status to stack
+            // setting break flag and the 5th bit to 1.
             // Example: Probably would look like:
             // configs[0x0100 + sp] =   (status | B | U)
             // NOTE: Break flag is set to 1 before pushing
 
-            configs[0x0100 + configs.sp] = data;
+            configs[0x0100 + configs.sp] = (configs.status | CPUConfigs::Status::B);
             setFlag(configs.status, CPUConfigs::Status::B, 0);
             setFlag(configs.status, CPUConfigs::Status::U, 0);
+            configs.status = (configs.status >> 4) | 1;
             configs.sp--; // since we are writing to memory we need to decrement the stack pointer
         });
 
