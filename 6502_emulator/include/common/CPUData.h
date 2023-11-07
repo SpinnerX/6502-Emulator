@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <cmath>
+#include <array>
 
 /**
  * 
