@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <unistd.h>
 #include <Instructions/InstructionSet.h>
-#include <common/CPUConfigs.h>
+#include <common/CPUData.h>
 
 template<typename T>
 void print(T value){
@@ -83,7 +83,7 @@ private:
 
 private:
     // CPUD contains our register
-    CPUConfigs conf;
+    CPUData conf;
     std::unordered_map<uint16_t, BaseInstruction *> lookup; // lookup table for searching 
     BaseInstruction* instruction; // This will store the current instruction that we will want to execute
 };

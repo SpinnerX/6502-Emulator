@@ -9,7 +9,7 @@ using namespace boost::ut;
  * 
  * 
 */
-void testLoadInstructions(CPUConfigs& conf){
+void testLoadInstructions(CPUData& conf){
     // Testing operations
     BaseInstruction* lda = new Instruction<0xA9>();
     lda->operation(conf, 2); // testing that we are loading number 2 into accumualator, essentially doing: LDA $2
@@ -29,7 +29,7 @@ void testLoadInstructions(CPUConfigs& conf){
 }
 
 
-void testStoringInstructions(CPUConfigs& conf){
+void testStoringInstructions(CPUData& conf){
     conf.reset(); // making sure we are resetting the registers to a known state
     BaseInstruction* sta = new Instruction<0x85>();
     int value = 2;
@@ -51,7 +51,7 @@ void testStoringInstructions(CPUConfigs& conf){
     };
 }
 
-void testTransferInstructions(CPUConfigs& conf){
+void testTransferInstructions(CPUData& conf){
     conf.reset(); // making sure we are resetting the registers to a known state
 
 
@@ -120,7 +120,7 @@ void testTransferInstructions(CPUConfigs& conf){
 }
 
 
-void testStackInstructions(CPUConfigs& conf){
+void testStackInstructions(CPUData& conf){
     conf.reset();
     BaseInstruction* pha = new Instruction<0x48>(); //  PHA (Push Accumulator to Stack)
     conf.ac = 0x10;
@@ -134,17 +134,17 @@ void testStackInstructions(CPUConfigs& conf){
     conf.reset(); // we are resetting the CPU to a known state
 
     BaseInstruction* php = new Instruction<0x08>(); // PHP (Push Procsesor Status on Stack)
-    php->operation(conf, (conf.status | CPUConfigs::Status::U));
+    php->operation(conf, (conf.status | CPUData::Status::U));
 
     "PHPStackInstructionInitialized Address Modes"_test = [&]{
-        expect(that % CPUConfigs::Status::B & 1); // TEST: Checking if the Break flag has been correctly set to 1
-        expect(that % CPUConfigs::Status::U & 1); // TEST: Checking Unused flag correctly set to 1 
+        expect(that % CPUData::Status::B & 1); // TEST: Checking if the Break flag has been correctly set to 1
+        expect(that % CPUData::Status::U & 1); // TEST: Checking Unused flag correctly set to 1 
     };
 
     conf.reset();
 
     // To read in the processor status from memory
-    php->operation(conf, (conf.status | CPUConfigs::Status::B));
+    php->operation(conf, (conf.status | CPUData::Status::B));
     BaseInstruction* pla = new Instruction<0x68>(); // PLA (Pull Accumulator from Stack)
     "PLAStackInstructionInitialized Address Modes"_test = [&]{
         expect(that % conf.sp == oldSp); // TEST: PLA basically reads the processor status from memory, which is how we pull data from memory

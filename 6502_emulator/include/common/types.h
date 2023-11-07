@@ -16,7 +16,7 @@
 struct InstructionData{
     // returns a value if there is an additional cycles to be computed
     // or returns 0 if no additional cycles depending on address mode
-    uint8_t cycle(CPUConfigs& configs){
+    uint8_t cycle(CPUData& configs){
         return 0;
     }
 

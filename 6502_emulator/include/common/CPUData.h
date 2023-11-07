@@ -7,7 +7,7 @@
 
 /**
  * 
- * CPUConfigs
+ * CPUData
  * - Struct that is a POD (Plain Old Data)
  * - Contains the registers that'll be used to do operations, moving data, etc.
  * 
@@ -21,7 +21,7 @@
  * 
 */
 
-struct CPUConfigs{
+struct CPUData{
     // Keeping track of our status inside CPUConfigs, since the entire CPU will be utilizing this configurations
     enum Status{
 		C = (1 << 0),	// Carry Bit

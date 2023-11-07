@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(){
-    CPUConfigs configs;
+    CPUData configs;
     testLoadInstructions(configs);
     testStoringInstructions(configs);
     testTransferInstructions(configs);
