@@ -79,7 +79,7 @@ void testTransferInstructions(CPUConfigs& conf){
     tax->operation(conf, conf.ac); // transferring accumulator to x register
 
     "TaxInstructionTest"_test = [&]{
-        expect(that % conf.x == value0); // Testing: Transferring ac to x reg
+        expect(that % conf.x == value0); // TEST: Transferring ac to x reg
     };
 
     BaseInstruction* tay = new Instruction<0xA8>(); // Function: A -> Y
