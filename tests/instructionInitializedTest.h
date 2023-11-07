@@ -126,19 +126,28 @@ void testStackInstructions(CPUConfigs& conf){
     conf.ac = 0x10;
     // Every time we write to the stack ptr we decrement, to test if the value's been set we increment the stack pointer for testing purposes
     pha->operation(conf, conf.ac);
+    uint8_t oldSp = conf.sp;
 
     "PHAStackInstructionInitialized Address Modes"_test = [&]{
         expect(that % conf[0x0100 + (conf.sp+1)] == conf.ac); // TEST: Checking if that specific location in memory contains the value set from the accumulator
     };
     conf.reset(); // we are resetting the CPU to a known state
 
-    BaseInstruction* php = new Instruction<0x08>(); // PLA (Pull Accumulator to Stack)
-    php->operation(conf, (conf.status | CPUConfigs::Status::B));
+    BaseInstruction* php = new Instruction<0x08>(); // PHP (Push Procsesor Status on Stack)
+    php->operation(conf, (conf.status | CPUConfigs::Status::U));
 
     "PHPStackInstructionInitialized Address Modes"_test = [&]{
         expect(that % CPUConfigs::Status::B & 1); // TEST: Checking if the Break flag has been correctly set to 1
         expect(that % CPUConfigs::Status::U & 1); // TEST: Checking Unused flag correctly set to 1 
-        // expect(that % 1 == (conf.status >> 5) & 1); // checking 5th bit has been set to 1.
+    };
+
+    conf.reset();
+
+    // To read in the processor status from memory
+    php->operation(conf, (conf.status | CPUConfigs::Status::B));
+    BaseInstruction* pla = new Instruction<0x68>(); // PLA (Pull Accumulator from Stack)
+    "PLAStackInstructionInitialized Address Modes"_test = [&]{
+        expect(that % conf.sp == oldSp); // TEST: PLA basically reads the processor status from memory, which is how we pull data from memory
     };
 }
 
