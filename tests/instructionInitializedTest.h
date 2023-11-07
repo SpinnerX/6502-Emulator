@@ -86,7 +86,7 @@ void testTransferInstructions(CPUConfigs& conf){
     tay->operation(conf, conf.ac); // transferring data in accumulator to indexed y register
 
     "TayInstructionTest"_test = [&]{
-        expect(that % conf.y == conf.ac);
+        expect(that % conf.y == conf.ac); // TEST: Transferring from accumulator to y register
     };
 
     BaseInstruction* tsx = new Instruction<0xBA>(); // Function: SP -> X
@@ -94,14 +94,14 @@ void testTransferInstructions(CPUConfigs& conf){
     tsx->operation(conf, conf.sp); // transferring data from stack register (SP) to index x register
 
     "TsxInstructionTest"_test = [&]{
-        expect(that % conf.x == conf.sp);
+        expect(that % conf.x == conf.sp); // TEST: Transfers ata from stack ptr to the x register
     };
 
     BaseInstruction* txa = new Instruction<0x8A>(); // Function: X -> A
-    txa->operation(conf, conf.x); // transferring data from x index register to accumulator
+    txa->operation(conf, conf.x); // TEST: transferring data from x index register to accumulator
 
     "TxaInstructionTest"_test = [&]{
-        expect(that % conf.ac == conf.x);
+        expect(that % conf.ac == conf.x); // TEST: Checking if the accumulator's data the same as x reg because we are transferring data from reg x to ac
     };
 
     BaseInstruction* txs = new Instruction<0x9A>(); // Function: X -> SP
