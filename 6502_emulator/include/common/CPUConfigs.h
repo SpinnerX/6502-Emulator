@@ -8,6 +8,7 @@
 /**
  * 
  * CPUConfigs
+ * - Struct that is a POD (Plain Old Data)
  * - Contains the registers that'll be used to do operations, moving data, etc.
  * 
  * 
