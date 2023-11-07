@@ -125,20 +125,19 @@ void testStackInstructions(CPUConfigs& conf){
     BaseInstruction* pha = new Instruction<0x48>(); //  PHA (Push Accumulator to Stack)
     conf.ac = 0x10;
     // Every time we write to the stack ptr we decrement, to test if the value's been set we increment the stack pointer for testing purposes
-    pha->operation(conf, 0x10);
+    pha->operation(conf, conf.ac);
 
     "PHAStackInstructionInitialized Address Modes"_test = [&]{
-        expect(that % conf[0x0100 + (conf.sp+1)] == conf.ac);
-        // expect(that % conf[0x0100 + conf.sp] == conf.ac); // Checking if memory[0x0100 + sp] contains same value as accumulator
-
-        // expect(that % 1 == (conf.status >> 5) & 1); // checking 5th bit has been set to 1.
+        expect(that % conf[0x0100 + (conf.sp+1)] == conf.ac); // TEST: Checking if that specific location in memory contains the value set from the accumulator
     };
+    conf.reset(); // we are resetting the CPU to a known state
 
     BaseInstruction* php = new Instruction<0x08>(); // PLA (Pull Accumulator to Stack)
     php->operation(conf, (conf.status | CPUConfigs::Status::B));
 
     "PHPStackInstructionInitialized Address Modes"_test = [&]{
-        
+        expect(that % CPUConfigs::Status::B & 1); // TEST: Checking if the Break flag has been correctly set to 1
+        expect(that % CPUConfigs::Status::U & 1); // TEST: Checking Unused flag correctly set to 1 
         // expect(that % 1 == (conf.status >> 5) & 1); // checking 5th bit has been set to 1.
     };
 }
