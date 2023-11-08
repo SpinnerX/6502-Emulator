@@ -67,6 +67,13 @@ public:
         lookup.emplace(0x94, new Instruction<0x94>());
         lookup.emplace(0x98, new Instruction<0x98>());
 
+        lookup.emplace(0x48, new Instruction<0x48>()); // PHA
+        lookup.emplace(0x08, new Instruction<0x08>()); // PHP
+        lookup.emplace(0x68, new Instruction<0x68>()); // PLA
+
+        
+
+
         // Initializing memory to these opcodes.
         // For the decoding process
         for(auto [key, value] : lookup){
