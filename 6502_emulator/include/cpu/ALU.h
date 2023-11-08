@@ -55,11 +55,21 @@
  *      - register is clocked by 6502's internal PHI2 clock signal, meaning that when PHI2 becomes active,
  *        contents of ALU are loaded into the ADD.
  *      - ADD has three output input signals, each of which control its output: ADD/ADL, ADD/SB(0-6), ADD/SB(7).
- *      => ADD/ADL sig
- * 
+ *      => ADD/ADL signal when active, outputs contents of ADD onto low address bus (ADL) of the 6502.
+ *      => ADD/SB(0-6) signal outputs the low seven bits of the ADD onto the system bus (SB) of 6502.
+ *      => ADD/SB(7) signal outputs the highest bit of ADD onto the system bus(SB) of 6502.
  * 
  * DEFINITION: Inverters - are electronic devices that can turn DC(Direct Current) to AC (Alternative Current)
  *             - Also responsible for controlling speed and torque for electric motors
+ * 
+ * 
+ * Register 1 (A) Substructure
+ * - Substructure of ALU's input register 1 (A) consists of five chips: 74347 chip which constitutes actual 1(A) register itself
+ * - Two, 74244 buffer chips, a 7404 NOT gate (inverter) chip, and a 7432 OR gate chip.
+ * - 
+ * 
+ * 
+ * 
  * 
  * 
  */
