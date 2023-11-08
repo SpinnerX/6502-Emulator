@@ -45,12 +45,6 @@ struct CPUData{
 
     // resetting these registers to a known state
     void reset(){
-        // pc = 0x0000;
-        // sp = 0x00;
-        // x = 0x00;
-        // y = 0x00;
-        // ac = 0x00;
-        // ir = 0x00;
         uint16_t low = memory[0xFFFC + 0];
         uint16_t high = memory[0xFFFC + 1];
         pc = (high << 8) | low; // We are setting the low bit to the 8th bit
@@ -68,6 +62,8 @@ struct CPUData{
     }
 
     uint16_t pc = 0x0000; // program counter
+    // Stack can only be 256 bytes which is 0100 to 01FF
+    // If stack ptr is out of range (in other words decrements lower then 0100 then overflow)
     uint8_t sp = 0x00; // stack pointer (points to location on bus)
     uint8_t x = 0x00; // x indexed register
     uint8_t y = 0x00; // y indexed register
