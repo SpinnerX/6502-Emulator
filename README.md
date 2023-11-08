@@ -68,13 +68,13 @@ NOTE - Regarding ALU is to figure how this should work, once verified that thhe 
     1.1. Need to implement to handle arithmetic operations \
         - Addition, Subtraction \
     1.2. Handling logic operations (branch, jmps, etc) \
-        - Increment, Decrement, AND, OR, Exclusive-OR operations (bitwise OR) \
+        - Increment, Decrement, AND, OR, Exclusive-OR operations (bitwise OR)
 
 2. Key Callback \
     2.1. Eventually checking if the user enters a key \
         - While the CPU is running we want to check if a key has been pressed \
         - Checking if user types q or another key to exit the emulator \ 
-        - Listening for key events without delay (basically instant listener) \
+        - Listening for key events without delay (basically instant listener)
 
 
 ## Resourceful Links
