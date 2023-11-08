@@ -153,6 +153,11 @@ struct BaseInstruction{
         std::cout << "Default operation() call\n";
     }
 
+    virtual uint8_t additionalCycles(){
+        std::cout << "Default additionalCycles()\n";
+        return 0;
+    }
+
     // Will vary if there needs to be an additional cycles for specific instructions
     virtual uint8_t cycle(CPUData&){
         std::cout << "Default cycle() call\n";
@@ -181,7 +186,7 @@ struct BaseInstruction{
     }
 
     std::string name="Default Name";
-    std::string addressMode = "Default Address Mode";
+    std::string addressMode = "Default Mode";
     uint16_t opcode=0;
     uint16_t cycles=0;
 
@@ -211,6 +216,31 @@ struct Instruction : public BaseInstruction {
 
     uint8_t cycle(CPUData& configs) override {
         return instructionData(Opcode).cycle(configs);
+    }
+
+    // Based on the address mode we only need to check if this instruction needs to 
+    uint8_t additionalCycles() override {
+        if(name == "Default Name" || addressMode == "Default Mode"){
+            std::cout << "There is either not a name for Instruction or Address Mode set!\n";
+            std::cout << "Name: " << name << '\n';
+            std::cout << "Address Mode: " << addressMode << '\n';
+            exit(0);
+        }
+
+        if(addressMode == "IMM"){}
+        else if(addressMode == "ZPG"){}
+        else if(addressMode == "ZPGX"){}
+        else if(addressMode == "ZPGY"){}
+        else if(addressMode == "ABS"){}
+        else if(addressMode == "ABSX"){}
+        else if(addressMode == "ABSY"){}
+        else if(addressMode == "IND_X"){}
+        else if(addressMode == "IND_Y"){}
+        else if(addressMode == "AC"){}
+        else if(addressMode == "INDIRECT"){}
+        else if(addressMode == "IMPLIED"){}
+        else if(addressMode == "RELATIVE"){}
+        return 0;
     }
 
     uint16_t getOpcode() const override {
