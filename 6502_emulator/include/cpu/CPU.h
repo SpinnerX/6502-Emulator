@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <Instructions/InstructionSet.h>
 #include <common/CPUData.h>
+#include <common/colors.h>
 
 template<typename T>
 void print(T value){
@@ -21,6 +22,7 @@ void printHex(uint16_t value){
 class CPU{
 public:
     CPU(){
+        set_raw_mode(true);
         conf.initializeMemory();
         conf.reset();
         lookup.emplace(0xA9, new Instruction<0xA9>());
@@ -71,7 +73,7 @@ public:
         lookup.emplace(0x08, new Instruction<0x08>()); // PHP
         lookup.emplace(0x68, new Instruction<0x68>()); // PLA
 
-        
+
 
 
         // Initializing memory to these opcodes.
@@ -81,15 +83,22 @@ public:
         }
     }
 
-    void run(){
+    void startingPhase(){
         std::cout << "CPU Running...\n";
         printHexDump();
         sleep(2);
+        clearscreen();
         int start = conf.pc;
         print("Starting Program Counter: ");
         printHex(conf.pc);
         print("\n");
+    }
+
+    void run(){
+        startingPhase();
         while(conf.pc < conf.memory.size()){
+            char ch = quick_read();
+            printHexDump();
             uint8_t opcode = fetch();
             print("Current Start Val: ");
             printHex(conf.pc);
@@ -100,10 +109,24 @@ public:
             BaseInstruction* instruction = decode(opcode);
 
             executeInstruction(instruction);
-            // printSP(); // debugging
+            if(ch == 'q'){
+                std::cout << "CPU Shutting Off...\n";
+                sleep(1);
+                clearscreen();
+                break;
+            }
+
             sleep(1);
+            movecursor(2, conf.memory.size());
+            clearscreen();
         }
-        std::cout << "CPU Stopping...\n";
+
+        // Making cursor go to original location
+        movecursor(0, 0);
+        show_cursor(true);
+
+        std::cout << "CPU Stopped Running\n";
+
     }
 
     // adding out fetch, decode, and execute phases
