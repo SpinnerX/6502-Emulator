@@ -23,7 +23,6 @@ public:
     CPU(){
         conf.initializeMemory();
         conf.reset();
-        // lookup.insert({0xA9, new Instruction<0xA9>()});
         lookup.emplace(0xA9, new Instruction<0xA9>());
         lookup.emplace(0xA5, new Instruction<0xA5>());
         lookup.emplace(0xB5, new Instruction<0xB5>());
@@ -69,6 +68,7 @@ public:
         lookup.emplace(0x98, new Instruction<0x98>());
 
         // Initializing memory to these opcodes.
+        // For the decoding process
         for(auto [key, value] : lookup){
             conf[key] = value->getOpcode();
         }
@@ -76,6 +76,8 @@ public:
 
     void run(){
         std::cout << "CPU Running...\n";
+        printHexDump();
+        sleep(2);
         int start = conf.pc;
         print("Starting Program Counter: ");
         printHex(conf.pc);
@@ -127,7 +129,6 @@ public:
         print("AC: ");
         printHex(conf.ac);
         print("\n");
-
     }
 
     // We make sure that the CPU is in a known state
@@ -142,9 +143,38 @@ private:
         print("\n");
     }
 
+    // This is just to see if we are able to see all the instructions that
+    // have been set in memory.
+    void printHexDump(){
+        print("Printing Hex Dump\n");
+        int sizeOfRows = 16;
+        std::cout << '\t';
+        for(int i = 0; i <= sizeOfRows; i++){
+            std::cout << std::setw(2) << std::hex << i << ' ';
+        }
+        std::cout << '\n';
+
+        for(int row = 0; row < 30; row++){
+            std::cout << std::hex << std::setw(6) <<std::setfill('0') << row * 16 << ' ';
+            for(int col = 0; col <= sizeOfRows; col++){
+                uint8_t data = conf[row * 16 + col];
+                // We want all values that are 0x00 to be ~~
+                // Just so we can indicate that no values have been set to that memory location.
+                if(data == 0x00) std::cout << std::setw(2) << "~~ ";
+                else std::cout << std::hex << std::setw(2) << static_cast<uint64_t>(data) << ' ';
+            }
+            std::cout << '\n';
+        }
+    }
+
 private:
-    // CPUD contains our register
+    // CPUData contains our registers, and data that'll be modified in the emulator
     CPUData conf;
-    std::unordered_map<uint16_t, BaseInstruction *> lookup; // lookup table for searching 
+    std::unordered_map<uint16_t, BaseInstruction *> lookup; // lookup table for searching for instructions corresponding with those opcodes
     BaseInstruction* instruction; // This will store the current instruction that we will want to execute
+
+    // Idea is we want to keep track of what is our current address mode (opcode) that we are fetching
+    // To make sure we are executing the right instructions address mode correctly
+    // For handling cycles (related stuff).
+    std::string currentAddressMode = "";
 };
