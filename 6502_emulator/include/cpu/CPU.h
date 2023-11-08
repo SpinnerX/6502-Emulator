@@ -11,11 +11,11 @@
 
 template<typename T>
 void print(T value){
-    std::cout << value << '\n';
+    std::cout << value;
 }
 
 void printHex(uint16_t value){
-    std::cout << "VAL: " << reinterpret_cast<void *>(value) << '\n';
+    std::cout << reinterpret_cast<void *>(value) << '\n';
 }
 
 class CPU{
@@ -23,18 +23,75 @@ public:
     CPU(){
         conf.initializeMemory();
         conf.reset();
-        lookup.insert({0xA9, new Instruction<0xA9>()});
+        // lookup.insert({0xA9, new Instruction<0xA9>()});
+        lookup.emplace(0xA9, new Instruction<0xA9>());
+        lookup.emplace(0xA5, new Instruction<0xA5>());
+        lookup.emplace(0xB5, new Instruction<0xB5>());
+        lookup.emplace(0x95, new Instruction<0x95>());
+        lookup.emplace(0x8D, new Instruction<0x8D>());
+        lookup.emplace(0x9D, new Instruction<0x9D>());
+        lookup.emplace(0x99, new Instruction<0x99>());
+        lookup.emplace(0x81, new Instruction<0x81>());
+        
+        lookup.emplace(0xA2, new Instruction<0xA2>());
+        lookup.emplace(0xA6, new Instruction<0xA6>());
+        lookup.emplace(0xB6, new Instruction<0xB6>());
+        lookup.emplace(0xAE, new Instruction<0xAE>());
+        lookup.emplace(0xBE, new Instruction<0xBE>());
+
+        lookup.emplace(0xA0, new Instruction<0xA0>());
+        lookup.emplace(0xA4, new Instruction<0xA4>());
+        lookup.emplace(0xB4, new Instruction<0xB4>());
+        lookup.emplace(0xAC, new Instruction<0xAC>());
+        lookup.emplace(0xBC, new Instruction<0xBC>());
+        
+        lookup.emplace(0x85, new Instruction<0x85>());
+        lookup.emplace(0x95, new Instruction<0x95>());
+        lookup.emplace(0x8D, new Instruction<0x8D>());
+        lookup.emplace(0x9D, new Instruction<0x9D>());
+        lookup.emplace(0x99, new Instruction<0x99>());
+        lookup.emplace(0x81, new Instruction<0x81>());
+        lookup.emplace(0x91, new Instruction<0x91>());
+
+        lookup.emplace(0x86, new Instruction<0x86>());
+        lookup.emplace(0x96, new Instruction<0x96>());
+        lookup.emplace(0x8E, new Instruction<0x8E>());
+
+        lookup.emplace(0x84, new Instruction<0x84>());
+        lookup.emplace(0x94, new Instruction<0x94>());
+        lookup.emplace(0x8C, new Instruction<0x8C>());
+        
+        lookup.emplace(0xAA, new Instruction<0xAA>());
+        lookup.emplace(0xA8, new Instruction<0xA8>());
+        lookup.emplace(0xBA, new Instruction<0xBA>());
+        lookup.emplace(0x8A, new Instruction<0x8A>());
+        lookup.emplace(0x94, new Instruction<0x94>());
+        lookup.emplace(0x98, new Instruction<0x98>());
+
+        // Initializing memory to these opcodes.
+        for(auto [key, value] : lookup){
+            conf[key] = value->getOpcode();
+        }
     }
 
     void run(){
         std::cout << "CPU Running...\n";
         int start = conf.pc;
-        while(start < lookup.size()){
-            uint16_t opcode = fetch();
+        print("Starting Program Counter: ");
+        printHex(conf.pc);
+        print("\n");
+        while(conf.pc < conf.memory.size()){
+            uint8_t opcode = fetch();
+            print("Current Start Val: ");
+            printHex(conf.pc);
+            print(" => ");
+            print("Current Iterative Opcode Value: ");
+            printHex(opcode);
+            print("\n");
             BaseInstruction* instruction = decode(opcode);
 
-            // executeInstruction(instruction);
-            printSP(); // debugging
+            executeInstruction(instruction);
+            // printSP(); // debugging
             sleep(1);
         }
         std::cout << "CPU Stopping...\n";
@@ -65,7 +122,11 @@ public:
 
         int value = 2;
         instruction->operation(conf, value);
+        // printHex(conf.ac);
+        std::cout << instruction << '\n';
+        print("AC: ");
         printHex(conf.ac);
+        print("\n");
 
     }
 
