@@ -83,7 +83,8 @@
         "source_location": "cpp",
         "stack": "cpp",
         "*.inc": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "any": "cpp"
     },
     "discord.enabled": true
 }
