@@ -64,17 +64,17 @@ NOTE - Regarding ALU is to figure how this should work, once verified that thhe 
       load, store, and is able to transfer data from one register to another, stack memory location to \
        a register, etc.
 
-1. Implementing ALU (Airthmetic Logical unit)
-    1.1. Need to implement to handle arithmetic operations
-        - Addition, Subtraction
-    1.2. Handling logic operations (branch, jmps, etc)
-        - Increment, Decrement, AND, OR, Exclusive-OR operations (bitwise OR)
+1. Implementing ALU (Airthmetic Logical unit) \
+    1.1. Need to implement to handle arithmetic operations \
+        - Addition, Subtraction \
+    1.2. Handling logic operations (branch, jmps, etc) \
+        - Increment, Decrement, AND, OR, Exclusive-OR operations (bitwise OR) \
 
-2. Key Callback
-    2.1. Eventually checking if the user enters a key
-        - While the CPU is running we want to check if a key has been pressed
-        - Checking if user types q or another key to exit the emulator
-        - Listening for key events without delay (basically instant listener)
+2. Key Callback \
+    2.1. Eventually checking if the user enters a key \
+        - While the CPU is running we want to check if a key has been pressed \
+        - Checking if user types q or another key to exit the emulator \ 
+        - Listening for key events without delay (basically instant listener) \
 
 
 ## Resourceful Links
