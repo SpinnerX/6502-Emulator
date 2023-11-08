@@ -73,7 +73,7 @@ NOTE - Regarding ALU is to figure how this should work, once verified that thhe 
 2. Key Callback \
     2.1. Eventually checking if the user enters a key \
         - While the CPU is running we want to check if a key has been pressed \
-        - Checking if user types q or another key to exit the emulator
+        - Checking if user types q or another key to exit the emulator \ 
         - Listening for key events without delay (basically instant listener)
 
 
