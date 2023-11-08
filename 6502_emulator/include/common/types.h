@@ -19,8 +19,10 @@
  * ABS - Absolute
  * ABSX - Absolute X
  * ABSY - Absolute X
+ * INDIRECT - INDIRECT
  * IND_X - (Indirect, X)
  * IND_Y - (Indirect), Y
+ * IMPLIED - IMPLIED
  * AC - Accumulator
 */
 
@@ -197,9 +199,132 @@ InstructionData instructionData(uint16_t opcode){
     // Shifting and Rotation Instructions
 
     // ASL - Shift Left One Bit (Memory or Accumulator)
-    instructions.emplace(0x0A, InstructionData{"ASL", "A", 0x0A});
-    instructions.emplace(0x06, InstructionData{"ASL", "IMM", 0x06});
+    instructions.emplace(0x0A, InstructionData{"ASL", "AC", 0x0A}); // Accumulator
+    instructions.emplace(0x06, InstructionData{"ASL", "ZPG", 0x06}); // ZeroPage
+    instructions.emplace(0x16, InstructionData{"ASL", "ZPGX", 0x16}); // ZeroPage X
+    instructions.emplace(0x0E, InstructionData{"ASL", "ABS", 0x0E}); // Absolute
+    instructions.emplace(0x1E, InstructionData{"ASL", "ABSX", 0x1E}); // Absolute X
 
+
+    // LSR - Left Shift One Bit Right (Memory or Accumulator)
+    instructions.emplace(0x4A, InstructionData{"ASL", "AC", 0x4A}); // Accumulator
+    instructions.emplace(0x46, InstructionData{"ASL", "ZPG", 0x46}); // ZeroPage
+    instructions.emplace(0x56, InstructionData{"ASL", "ZPGX", 0x56}); // ZeroPage X
+    instructions.emplace(0x4E, InstructionData{"ASL", "ABS", 0x4E}); // Absolute
+    instructions.emplace(0x5E, InstructionData{"ASL", "ABSX", 0x5E}); // Absolute X
+
+    // ROL - Rotate One Bit Left (Memory or Accumulator)
+    instructions.emplace(0x2A, InstructionData{"ASL", "AC", 0x2A}); // Accumulator
+    instructions.emplace(0x26, InstructionData{"ASL", "ZPG", 0x26}); // ZeroPage
+    instructions.emplace(0x36, InstructionData{"ASL", "ZPGX", 0x36}); // ZeroPage X
+    instructions.emplace(0x2E, InstructionData{"ASL", "ABS", 0x2E}); // Absolute
+    instructions.emplace(0x3E, InstructionData{"ASL", "ABSX", 0x3E}); // Absolute X
+
+    // ROR - Rotate One Bit Right (Memory or Accumulator)
+    instructions.emplace(0x6A, InstructionData{"ASL", "AC", 0x6A}); // Accumulator
+    instructions.emplace(0x66, InstructionData{"ASL", "ZPG", 0x66}); // ZeroPage
+    instructions.emplace(0x76, InstructionData{"ASL", "ZPGX", 0x76}); // ZeroPage X
+    instructions.emplace(0x6E, InstructionData{"ASL", "ABS", 0x6E}); // Absolute
+    instructions.emplace(0x7E, InstructionData{"ASL", "ABSX", 0x7E}); // Absolute X
+
+
+    // Flag Instructions
+
+    // CLC - Clear Carry
+    instructions.emplace(0x18, InstructionData{"CLC", "IMPLIED", 0x18});
+
+    // CLD - Clear Decimal Mode
+    instructions.emplace(0xD8, InstructionData{"CLD", "IMPLIED", 0xD8});
+
+    // CLI - Clear Interrupt Disable Bit
+    instructions.emplace(0x58, InstructionData{"CLI", "IMPLIED", 0x58});
+
+    // CLV - Clear Overflow Flag
+    instructions.emplace(0xB8, InstructionData{"CLV", "IMPLIED", 0xB8});
+
+    // SEC - Set Carry Flag
+    instructions.emplace(0x38, InstructionData{"SEC", "IMPLIED", 0x38});
+    
+    // SED - Set Decimal Mode
+    instructions.emplace(0xF8, InstructionData{"SED", "IMPLIED", 0xF8});
+
+    // SEI - Set Interrupt Disable Status
+    instructions.emplace(0x78, InstructionData{"SEI", "IMPLIED", 0x78});
+
+
+    // Comparison Instructions
+
+    // CMP - Compare Memory with Accumulator
+    instructions.emplace(0xC9, InstructionData{"CMP", "IMM", 0xC9}); // Immediate
+    instructions.emplace(0xC5, InstructionData{"CMP", "ZPG", 0xC5}); // ZeroPage
+    instructions.emplace(0xD5, InstructionData{"CMP", "ZPGX", 0xD5}); // ZeroPage X
+    instructions.emplace(0xCD, InstructionData{"CMP", "ABS", 0xCD}); // Absolute
+    instructions.emplace(0xDD, InstructionData{"CMP", "ABSX", 0xDD}); // Absolute X
+    instructions.emplace(0xD9, InstructionData{"CMP", "ABSY", 0xD9}); // Absolute Y
+    instructions.emplace(0xC1, InstructionData{"CMP", "IND_X", 0xC1}); // (Indirect, X)
+    instructions.emplace(0xD1, InstructionData{"CMP", "IND_YX", 0xD1}); // (Indirect), Y
+
+    // CPX - Compare Memory and Index X
+    instructions.emplace(0xE0, InstructionData{"CPX", "IMM", 0xE0}); // Immediate
+    instructions.emplace(0xE4, InstructionData{"CPX", "ZPG", 0xE4}); // ZeroPage
+    instructions.emplace(0xEC, InstructionData{"CPX", "ABS", 0xEC}); // Absolute
+
+    // CPY - Compare Memory and Index Y
+    instructions.emplace(0xC0, InstructionData{"CPY", "IMM", 0xC0}); //  Immediate
+    instructions.emplace(0xC4,  InstructionData{"CPY", "ZPG", 0xC4}); // ZeroPage
+    instructions.emplace(0xCC, InstructionData{"CPY", "ABS", 0xCC}); // Absolute
+
+    // Conditional Branch Instructions
+
+    // BCC  - Branch on Carry Clear
+    instructions.emplace(0x90, InstructionData{"BCC", "RELATIVE", 0x90});
+
+    // BCS - Branch on Carry Set
+    instructions.emplace(0xB0, InstructionData{"BCS", "RELATIVE", 0xB0});
+
+    // BEQ - Branch on Result Zero
+    instructions.emplace(0xF0, InstructionData{"BEQ", "RELATIVE", 0xF0});
+
+    // BMI - Branch on Result Minus
+    instructions.emplace(0x30, InstructionData{"BMI", "RELATIVE", 0x30});
+
+    // BNE - Branch on Result Not Zero
+    instructions.emplace(0xD0, InstructionData{"BNE", "RELATIVE", 0xD0});
+
+    // BPL - Branch on Result Plus
+    instructions.emplace(0x10, InstructionData{"BNE", "RELATIVE", 0x10});
+
+    // BVC - Branch on Overflow Clear
+    instructions.emplace(0x50, InstructionData{"BVC", "RELATIVE", 0x50});
+
+    // BVS - Branch on Overflow Set
+    instructions.emplace(0x70, InstructionData{"BVS", "RELATIVE", 0x70});
+
+    // Jump and Subroutines Instructions
+
+
+    // JMP - Jump to New Location
+    instructions.emplace(0x4C, InstructionData{"JMP", "ABS", 0x4C});
+    instructions.emplace(0x6C, InstructionData{"JMP", "INDIRECT", 0x6C});
+
+    // JSR - Jump to New Location Saving Return Address
+    instructions.emplace(0x20, InstructionData{"JSR", "ABS", 0x20});
+
+    // RTS - Return from Subroutine
+    instructions.emplace(0x60, InstructionData{"RTS", "IMPLIED", 0x60});
+
+    // BRK - Force Break
+    instructions.emplace(0x00, InstructionData{"BRK", "IMPLIED", 0x00});
+
+    // RTI - Return From Interrupt
+    instructions.emplace(0x40, InstructionData{"RTI", "IMPLIED", 0x40});
+
+    // BIT - Bits in Memory with Accumulator
+    instructions.emplace(0x24, InstructionData{"BIT", "ZPG", 0x24});
+    instructions.emplace(0x2C, InstructionData{"BIT", "ABS", 0x2C});
+
+    // NOP - No Operation
+    instructions.emplace(0xEA, InstructionData{"NOP", "IMPLIED", 0xEA});
 
     return instructions[opcode];
 }
