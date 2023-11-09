@@ -82,11 +82,13 @@ struct ALU{
     uint8_t registerInput1;
     uint8_t registerInput2;
 
-    void ADD(uint8_t i1, uint8_t i2){}
 
-    void SUB(uint8_t i1, uint8_t i2){}
 
-    void adder(uint8_t input1, uint8_t input2){}
+    uint8_t ADD(uint8_t i1, uint8_t i2){ return 0; }
+
+    uint8_t SUB(uint8_t i1, uint8_t i2){ return 0; }
+
+    uint8_t adder(uint8_t input1, uint8_t input2){ return 0; }
 
     std::array<uint8_t, 1024 * 64> buffer; 
 };
