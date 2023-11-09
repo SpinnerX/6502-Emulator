@@ -20,6 +20,16 @@
  *  ir = decode(opcode)
  *  
  * 
+ * Example (When looking at reading a word, and the next instruction)
+ * => example, if you have an instruction like LDA #$10, it would be represented in memory as
+ *      two bytes: A9 (opcode for LDA immediate mode) and 10 (operand). After fetching the first byte
+ *      (A9), the PC will increment by 1 to fetch the operand (10).
+ * => However, when reading a word (incrementing PC by 2), it does not necessarily mean you are
+ *      grabbing two instructions. It may mean that you are grabbing one instruction and its operand, or
+ *      part of an instruction that takes more than one or two bytes. Alternatively, if an operand is a
+ *      memory address (which is 16 bits, or 2 bytes in 6502), you may be reading in the full address with
+ *      a two-byte (word) read.
+ * =>Ultimately, the interpretation depends on the instructions set to be executed and how the data is encoded in memory.
 */
 
 struct CPUData{
@@ -37,7 +47,7 @@ struct CPUData{
 
     void initializeMemory(){
         memory.fill(0x00); // initializing array to 0
-        memory[0x03] = 0xA9;
+        // memory[0x03] = 0xA9;
         // setting reset vector at 0xFFFC and 0xFFFD
         memory[0xFFFC] = 0x0000;
         memory[0xFFFC] = 0x0001;
@@ -45,8 +55,8 @@ struct CPUData{
 
     // resetting these registers to a known state
     void reset(){
-        uint16_t low = memory[0xFFFC + 0];
-        uint16_t high = memory[0xFFFC + 1];
+        uint16_t low = memory[0xFFFC + 0]; // we take the low byte
+        uint16_t high = memory[0xFFFC + 1]; // we take the high byte
         pc = (high << 8) | low; // We are setting the low bit to the 8th bit
         sp = 0xFD; // setting and initializing stack ptr to known state
         x = 0x00;
@@ -55,6 +65,13 @@ struct CPUData{
         ir = 0x00;
         status = 0x00 | Status::U; // setting status to unused state
         cycles = 8; // resetting time
+    }
+
+
+    uint8_t read(){
+        uint8_t data = memory[pc] | (memory[pc+1] << 8);
+        pc++;
+        return data;
     }
 
     uint8_t& operator[](uint64_t address) {
