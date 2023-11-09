@@ -9,6 +9,8 @@
 #include <Instructions/InstructionSet.h>
 #include <common/CPUData.h>
 #include <common/colors.h>
+#include <vector>
+ #include <string>
 
 template<typename T>
 void print(T value){
@@ -79,8 +81,9 @@ public:
         // Initializing memory to these opcodes.
         // For the decoding process
         for(auto [key, value] : lookup){
-            conf[key] = value->getOpcode();
+            conf.memory[key] = value->getOpcode();
         }
+
     }
 
     void startingPhase(){
@@ -98,8 +101,9 @@ public:
         startingPhase();
         while(conf.pc < conf.memory.size()){
             char ch = quick_read();
-            printHexDump();
-            uint8_t opcode = fetch();
+            printHexDump(true);
+            // uint8_t opcode = fetch();
+            uint8_t opcode = read();
             print("Current Start Val: ");
             printHex(conf.pc);
             print(" => ");
@@ -161,6 +165,10 @@ public:
         print("\n");
     }
 
+    uint8_t read(){
+        return conf.read();
+    }
+
     // We make sure that the CPU is in a known state
     void reset(){
         conf.reset();
@@ -175,8 +183,10 @@ private:
 
     // This is just to see if we are able to see all the instructions that
     // have been set in memory.
-    void printHexDump(){
+    // Takes a parameter boolean, so we can enable color coding keeping track of the iteration
+    void printHexDump(bool coloringEnabled = false){
         print("Printing Hex Dump\n");
+
         int sizeOfRows = 16;
         std::cout << '\t';
         for(int i = 0; i <= sizeOfRows; i++){
@@ -190,8 +200,21 @@ private:
                 uint8_t data = conf[row * 16 + col];
                 // We want all values that are 0x00 to be ~~
                 // Just so we can indicate that no values have been set to that memory location.
+                // if(coloringEnabled){
+                //     // if(data == 0x00) std::cout << std::setw(2) << GREEN << "~~ " << RESET;
+                //     // else std::cout << std::hex << std::setw(2) << static_cast<uint64_t>(data) << ' ';
+                //     if(data == 0x00) std::cout << std::setw(2) << GREEN << "~~ " << RESET;
+                // }
+                // else{
+                //     // if(data == 0x00) std::cout << std::setw(2) << "~~ ";
+                //     // else std::cout << std::hex << std::setw(2) << static_cast<uint64_t>(data) << ' ';
+                //     // std::cout << std::hex << std::setw(2) << static_cast<uint64_t>(data) << ' ';
+                //     if(data == 0x00) std::cout << std::setw(2) << "~~ ";
+                // }
+                
                 if(data == 0x00) std::cout << std::setw(2) << "~~ ";
                 else std::cout << std::hex << std::setw(2) << static_cast<uint64_t>(data) << ' ';
+                
             }
             std::cout << '\n';
         }
@@ -207,4 +230,5 @@ private:
     // To make sure we are executing the right instructions address mode correctly
     // For handling cycles (related stuff).
     std::string currentAddressMode = "";
+    std::vector<std::vector<uint64_t>> hexOpCodes;
 };
